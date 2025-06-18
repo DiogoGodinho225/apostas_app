@@ -1,0 +1,44 @@
+.login-container{
+    margin-top: 5%;
+}
+
+.login-container form{
+    display: flex;
+    flex-direction: column;
+    gap: 2.5vh;
+}
+
+.login-container .form-group{
+    display: flex;
+    flex-direction: column;
+    gap: 0.7vh;
+}
+
+.login-container button{
+    width: 100%;
+    padding: 2.5% 0;
+    font-size: 0.8vw;
+    border: 1px solid var(--border-color);
+    color: var(--secondary-color);
+    background-color: var(--primary-color);
+    font-weight: bold;
+}
+
+.login-container button:hover{
+    background-color: rgb(255, 89, 89);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.login-container .form-group label{
+    color: black;
+    font-size: 0.8vw;
+}
+
+.login-container .form-group input{
+    outline: none;
+    width: 100%;
+    padding: 2.5% 2.5%;
+    font-size: 0.8vw;
+    border: 1px solid var(--border-color);
+}
