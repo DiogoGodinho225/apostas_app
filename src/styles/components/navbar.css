@@ -1,11 +1,21 @@
+nav{
+    padding: 2%;
+}
+
 nav ul {
     list-style: none;
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 5vw;
 }
 
-nav ul li a{
+.nav-link{
     color: var(--secondary-color);
     text-decoration: none;
+}
+
+.nav-link.active{
+    background-color: var(--secondary-color);
+    color: black;
+    border-radius: 25%;
 }
