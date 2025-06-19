@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -12,4 +6,78 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model Bet {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  match_id   Int
+  league_id  Int
+  bet_type   String   @db.VarChar(100)
+  prediction String   @db.VarChar(100)
+  stake      Int
+  odds       Float    @db.Float
+  result     String   @db.VarChar(100)
+  profit     Float    @db.Float
+  created_at DateTime @default(now()) @db.DateTime(0)
+  updated_at DateTime @default(now()) @db.DateTime(0)
+  user       User     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_bets_users1")
+
+  @@index([user_id], map: "fk_bets_users1_idx")
+  @@map("bets")
+}
+
+model Image {
+  id         Int      @id @default(autoincrement())
+  url        String   @db.VarChar(60)
+  created_at DateTime @default(now()) @db.DateTime(0)
+  updated_at DateTime @default(now()) @db.DateTime(0)
+  users      User[]
+  @@map("images")
+}
+
+model User {
+  id                  Int                   @id @default(autoincrement())
+  username            String                @unique(map: "username_UNIQUE") @db.VarChar(50)
+  email               String                @unique(map: "email_UNIQUE") @db.VarChar(100)
+  password_hash       String                @db.VarChar(255)
+  profile_pic_id      Int                   @default(1)
+  last_login          DateTime              @default(now()) @db.DateTime(0)
+  status              String                @default("1") @db.VarChar(45)
+  created_at          DateTime              @default(now()) @db.DateTime(0)
+  updated_at          DateTime              @default(now()) @db.DateTime(0)
+  bets                Bet[]
+  image               Image                 @relation(fields: [profile_pic_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_users_images")
+  wallets             Wallet[]
+  walletTransactions  WalletTransaction[]
+
+  @@index([profile_pic_id], map: "fk_users_images_idx")
+  @@map("users")
+}
+
+model Wallet {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  balance    Float    @db.Float
+  stake      Float    @default(0) @db.Float
+  created_at DateTime @default(now()) @db.DateTime(0)
+  updated_at DateTime @default(now()) @db.DateTime(0)
+  user       User     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_wallet_users1")
+
+  @@index([user_id], map: "fk_wallet_users1_idx")
+  @@map("wallet")
+}
+
+model WalletTransaction {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  type       Int
+  amount     Float    @db.Float
+  balance    Float    @db.Float
+  created_at DateTime @default(now()) @db.DateTime(0)
+  updated_at DateTime @default(now()) @db.DateTime(0)
+  user       User     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_wallet_transactions_users1")
+
+  @@index([user_id], map: "fk_wallet_transactions_users1_idx")
+  @@map("wallet_transactions")
 }

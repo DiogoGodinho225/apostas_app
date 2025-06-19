@@ -15,7 +15,7 @@ const AuthPage = () => {
       <h1>{!showLogin && showRegister ? ('Criar Conta') : 'Login'}</h1>
       <AuthButtons setShowLogin={setShowLogin} setShowRegister={setShowRegister} showLogin={showLogin} showRegister={showRegister} />
 
-      {!showLogin && showRegister ? (<RegisterForm />) : <LoginForm />}
+      {!showLogin && showRegister ? (<RegisterForm setShowLogin={setShowLogin} setShowRegister={setShowRegister}/>) : <LoginForm />}
     </div>
   );
 }
