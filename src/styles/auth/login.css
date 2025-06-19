@@ -42,3 +42,10 @@
     font-size: 0.8vw;
     border: 1px solid var(--border-color);
 }
+
+.login-container .alertMessage{
+    font-size: 0.9vw;
+    text-align: center;
+    color: var(--primary-color);
+    font-weight: bold;
+}
