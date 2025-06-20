@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 
 export const middlewareAuth = withAuth(
     function middleware(req){
-        console.log('Token:', req.nextauth.token);
         return NextResponse.next();
     },
     {

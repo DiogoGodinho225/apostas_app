@@ -74,6 +74,8 @@ const FormGroup = ({ label, className, type, name, handleInputChange }) => {
 
 const SubmitBtn = ({loading}) => {
 
+    console.log(loading);
+
     return (
         <button disabled={loading} type="submit">
             Login

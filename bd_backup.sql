@@ -65,7 +65,7 @@ CREATE TABLE `images` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,6 +74,7 @@ CREATE TABLE `images` (
 
 LOCK TABLES `images` WRITE;
 /*!40000 ALTER TABLE `images` DISABLE KEYS */;
+INSERT INTO `images` VALUES (1,'images/user.png','2025-06-19 15:44:51','2025-06-19 15:44:51'),(2,'images/teste.png','2025-06-20 12:15:37','2025-06-20 12:15:37');
 /*!40000 ALTER TABLE `images` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -89,7 +90,7 @@ CREATE TABLE `users` (
   `username` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password_hash` varchar(255) NOT NULL,
-  `profile_pic_id` int NOT NULL,
+  `profile_pic_id` int NOT NULL DEFAULT '1',
   `last_login` datetime NOT NULL,
   `status` varchar(45) NOT NULL DEFAULT '1',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -99,7 +100,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `username_UNIQUE` (`username`),
   KEY `fk_users_images_idx` (`profile_pic_id`),
   CONSTRAINT `fk_users_images` FOREIGN KEY (`profile_pic_id`) REFERENCES `images` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -108,6 +109,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (6,'God','diogosimoes225@gmail.com','$2b$12$BY1UbYIG9ey1iln0sHSWA..OrAZeJ4oAv6zpEeEpXOoKCmXBhZLTa',2,'2025-06-20 09:11:59','1','2025-06-19 15:53:57','2025-06-20 12:15:51'),(7,'Diogo','diogosimoes@gmail.com','$2b$12$40GhENO0vsX0UO.xXDWLGOjaEvZGvTqgvh3RNs1I9UaCzXn9YHd6q',1,'2025-06-19 15:59:56','1','2025-06-19 15:59:56','2025-06-19 15:59:56');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -179,4 +181,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-19 12:34:29
+-- Dump completed on 2025-06-20 12:31:10

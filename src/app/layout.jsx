@@ -3,16 +3,21 @@ import NavBar from '@/components/navbar';
 import Footer from '@/components/footer';
 import '@/styles/variables.css';
 import { usePathname } from 'next/navigation';
+import { SessionProvider } from 'next-auth/react';
 
 export default function RootLayout({ children }) {
 
   const pathname = usePathname();
 
-  if(pathname === '/auth') {
+  if (pathname === '/auth') {
     return (
       <html lang="pt">
         <body>
-          <main>{children}</main>
+          <main>
+            <SessionProvider>
+              {children}
+            </SessionProvider>
+          </main>
         </body>
       </html>
     );
@@ -21,15 +26,18 @@ export default function RootLayout({ children }) {
   return (
     <html lang="pt">
       <body>
-        <header>
-          <NavBar />
-        </header>
+        <SessionProvider>
 
-        <main>{children}</main>
+          <header>
+            <NavBar />
+          </header>
 
-        <footer>
-          <Footer />
-        </footer>
+          <main>{children}</main>
+
+          <footer>
+            <Footer />
+          </footer>
+        </SessionProvider>
       </body>
     </html>
   );
