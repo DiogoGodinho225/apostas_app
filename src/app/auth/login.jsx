@@ -37,6 +37,7 @@ const LoginForm = () => {
                 if(result.ok){
                     setSuccess(true);
                     setMessage('Login Efetuado!');
+                    localStorage.setItem('HasLoggedIn', true);
                     router.push('/HomePage');
                 }else{
                     setSuccess(false);

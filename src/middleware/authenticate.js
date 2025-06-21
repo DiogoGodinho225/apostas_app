@@ -1,18 +1,21 @@
-import { withAuth } from "next-auth/middleware";
+import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 
-export const middlewareAuth = withAuth(
-    function middleware(req){
-        return NextResponse.next();
-    },
-    {
-        callbacks:{
-            authorized: ({token}) => !!token,
-        },
-        pages:{
-            signIn: '/auth',
-        },
-    }
-);
+export async function middlewareAuth(req) {
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const { pathname } = req.nextUrl;
+  const url = req.nextUrl.clone();
 
+  if (pathname === '/auth' && token) {
+    url.pathname = '/HomePage';
+    return NextResponse.redirect(url);
+  }
 
+  if (!token && pathname !== '/auth') {
+    url.pathname = '/auth';
+    url.searchParams.set('error', 'token_invalid');
+    return NextResponse.redirect(url);
+  }
+
+  return NextResponse.next();
+}

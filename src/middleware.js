@@ -1,20 +1,27 @@
 import { middlewareAuth } from "@/middleware/authenticate";
-import { checkAuth as checkAuthMiddleware } from "@/middleware/checkAuth";
+import { verifyToken } from "./middleware/verifyToken";
+import { NextResponse } from "next/server";
 
-export default async function middleware(req) {
+export async function middleware(req) {
   const pathname = req.nextUrl.pathname;
 
-  if (pathname.startsWith('/auth')) {
-    const res = await checkAuthMiddleware(req);
+  if (pathname.startsWith('/api/auth')) {
+    return NextResponse.next();
+  }
+
+  if (pathname.startsWith('/api')) {
+    const res = await verifyToken(req);
     if (res) return res;
   }
 
   return middlewareAuth(req);
 }
 
+export default middleware;
+
 export const config = {
   matcher: [
-    "/auth",
-    "/((?!api|_next/|favicon.ico|auth|$).*)",
+    "/api/:path*",
+    "/((?!api|_next/|favicon.ico|$).*)",
   ],
 };

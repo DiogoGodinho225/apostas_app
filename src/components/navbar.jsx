@@ -1,11 +1,13 @@
 'use client'
 import '@/styles/components/navbar.css';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { firaSans } from '@/utils/fonts';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { getProfilePic } from '@/services/user';
+import { toast } from 'react-hot-toast';
+
 
 const Navbar = () => {
 
@@ -34,36 +36,33 @@ const Profile = () => {
 
     const { data: session, status } = useSession();
     const router = useRouter();
-    const [url, setUrl] = useState(null);
+    const [url, setUrl] = useState(process.env.NEXT_PUBLIC_APP_URL + 'images/user.png');
 
-    useEffect(() => {
-        if (status === "loading") return;
-        if (!session) {
-            router.push("/auth");
-        }
-    }, [session, status, router]);
 
     useEffect(() => {
         const fetchProfilePic = async () => {
+
             try {
+                if (status === "loading") {
+                    return null
+                }
+
                 let id = session.user.id;
                 const result = await getProfilePic(id);
+                if (result === 401) {
+                    return router.push('/auth?error=token_invalid');
+                }
                 setUrl(process.env.NEXT_PUBLIC_APP_URL + result);
             } catch (error) {
-                console.log(error)
                 setUrl(process.env.NEXT_PUBLIC_APP_URL + 'images/user.png');
             }
         }
 
-        if (session) {
+        if (status === "authenticated") {
             fetchProfilePic();
-        }else {
-            setUrl(process.env.NEXT_PUBLIC_APP_URL + 'images/user.png'); 
         }
 
-    }, [session]);
-
-    if (!url) return null;
+    }, [session, status, router]);
 
     return (
         <Link href={'/wallet'} className='btn-profile'><img src={url} alt="profile image" /></Link>

@@ -4,6 +4,8 @@ import Footer from '@/components/footer';
 import '@/styles/variables.css';
 import { usePathname } from 'next/navigation';
 import { SessionProvider } from 'next-auth/react';
+import { Toaster } from 'react-hot-toast';
+import { firaSans } from '@/utils/fonts';
 
 export default function RootLayout({ children }) {
 
@@ -11,10 +13,17 @@ export default function RootLayout({ children }) {
 
   if (pathname === '/auth') {
     return (
-      <html lang="pt">
+      <html className={firaSans.className} lang="pt">
         <body>
           <main>
             <SessionProvider>
+              <Toaster position="top-right"
+              toastOptions={{
+                style: {
+                  fontSize: '0.8vw',
+                }
+              }}
+              />
               {children}
             </SessionProvider>
           </main>
@@ -24,10 +33,16 @@ export default function RootLayout({ children }) {
   }
 
   return (
-    <html lang="pt">
+    <html className={firaSans.className} lang="pt">
       <body>
         <SessionProvider>
-
+           <Toaster position="top-right"
+              toastOptions={{
+                style: {
+                  fontSize: '0.9vw',
+                }
+              }}
+              />
           <header>
             <NavBar />
           </header>
