@@ -1,7 +1,7 @@
 'use client';
 import '@/styles/auth/register.css'
 import { useEffect, useState } from 'react';
-import { register } from '@/services/auth';
+import { register } from '@/services/authApi';
 
 const RegisterForm = ({ setShowLogin, setShowRegister }) => {
 

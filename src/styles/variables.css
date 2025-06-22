@@ -17,3 +17,7 @@
 body{
     background-color: var(--primary-color);
 }
+
+main{
+    padding-top: 4.5%;
+}

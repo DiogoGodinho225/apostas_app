@@ -100,7 +100,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `username_UNIQUE` (`username`),
   KEY `fk_users_images_idx` (`profile_pic_id`),
   CONSTRAINT `fk_users_images` FOREIGN KEY (`profile_pic_id`) REFERENCES `images` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -109,7 +109,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (6,'God','diogosimoes225@gmail.com','$2b$12$BY1UbYIG9ey1iln0sHSWA..OrAZeJ4oAv6zpEeEpXOoKCmXBhZLTa',2,'2025-06-20 09:11:59','1','2025-06-19 15:53:57','2025-06-20 12:15:51'),(7,'Diogo','diogosimoes@gmail.com','$2b$12$40GhENO0vsX0UO.xXDWLGOjaEvZGvTqgvh3RNs1I9UaCzXn9YHd6q',1,'2025-06-19 15:59:56','1','2025-06-19 15:59:56','2025-06-19 15:59:56');
+INSERT INTO `users` VALUES (6,'God','diogosimoes225@gmail.com','$2b$12$BY1UbYIG9ey1iln0sHSWA..OrAZeJ4oAv6zpEeEpXOoKCmXBhZLTa',2,'2025-06-22 13:11:15','1','2025-06-19 15:53:57','2025-06-22 14:11:15'),(7,'Diogo','diogosimoes@gmail.com','$2b$12$40GhENO0vsX0UO.xXDWLGOjaEvZGvTqgvh3RNs1I9UaCzXn9YHd6q',1,'2025-06-19 15:59:56','1','2025-06-19 15:59:56','2025-06-19 15:59:56'),(8,'teste','teste@gmail.com','$2b$12$bA.VhoSY7D3rsSl5x0R/5ucKE8Ajd/F31/6IDazqP4ji9m5PFKUKi',1,'2025-06-22 12:50:27','1','2025-06-22 12:50:27','2025-06-22 12:50:27'),(9,'Diogoo','diogo@gmail.com','$2b$12$F6t/mYFzxx8ZPLs5cf7Dz.05fELX2DzjDnBq/kOnVegsJH/NX4z8y',1,'2025-06-22 12:51:59','1','2025-06-22 12:51:59','2025-06-22 12:51:59');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -130,7 +130,7 @@ CREATE TABLE `wallet` (
   PRIMARY KEY (`id`),
   KEY `fk_wallet_users1_idx` (`user_id`),
   CONSTRAINT `fk_wallet_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -139,6 +139,7 @@ CREATE TABLE `wallet` (
 
 LOCK TABLES `wallet` WRITE;
 /*!40000 ALTER TABLE `wallet` DISABLE KEYS */;
+INSERT INTO `wallet` VALUES (1,6,1000,0,'2025-06-22 12:33:38','2025-06-22 14:17:43'),(2,7,0,0,'2025-06-22 12:33:38','2025-06-22 12:33:38'),(3,9,0,0,'2025-06-22 12:51:59','2025-06-22 12:51:59');
 /*!40000 ALTER TABLE `wallet` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -181,4 +182,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-20 12:31:10
+-- Dump completed on 2025-06-22 14:26:00

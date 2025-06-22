@@ -48,7 +48,7 @@ model User {
   updated_at          DateTime              @default(now()) @db.DateTime(0)
   bets                Bet[]
   image               Image                 @relation(fields: [profile_pic_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_users_images")
-  wallets             Wallet[]
+  wallet              Wallet?              
   walletTransactions  WalletTransaction[]
 
   @@index([profile_pic_id], map: "fk_users_images_idx")
@@ -57,12 +57,12 @@ model User {
 
 model Wallet {
   id         Int      @id @default(autoincrement())
-  user_id    Int
+  user_id    Int      @unique          
   balance    Float    @db.Float
   stake      Float    @default(0) @db.Float
   created_at DateTime @default(now()) @db.DateTime(0)
   updated_at DateTime @default(now()) @db.DateTime(0)
-  user       User     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_wallet_users1")
+  user       User     @relation(fields: [user_id], references: [id], map: "fk_wallet_users1")
 
   @@index([user_id], map: "fk_wallet_users1_idx")
   @@map("wallet")

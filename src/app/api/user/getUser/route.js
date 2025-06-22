@@ -10,12 +10,11 @@ export async function GET(request) {
             status: 200,
         });
     } else {
-        const user = await prisma.user.findFirst({ where: { id: parseInt(id) } });
+        const user = await prisma.user.findFirst({ where: { id: parseInt(id) }, include: {wallet: true, image: true}});
 
         if (user) {
-            const img = await prisma.image.findFirst({ where: { id: user.profile_pic_id } });
 
-            return new Response(JSON.stringify({ success: true, message: 'Imagem encontrada!', url: img.url}), {
+            return new Response(JSON.stringify({ success: true, message: 'Utilizador encontrado!', user}), {
                 status: 200,
             });
         } else {

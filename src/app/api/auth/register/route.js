@@ -8,7 +8,7 @@ export async function POST(request) {
     if (!email || !username || !password) {
         return new Response(JSON.stringify({ success: false, message: 'Deve preencher todos os campos!' }), {
             status: 200,
-            
+
         });
     }
 
@@ -25,7 +25,7 @@ export async function POST(request) {
     if (userExists) {
         return new Response(JSON.stringify({ success: false, message: 'Email já existente!' }), {
             status: 200,
-           
+
         });
     }
 
@@ -36,14 +36,24 @@ export async function POST(request) {
             username,
             email,
             password_hash,
-            profile_pic_id: 1,
+            image: {
+                connect: {
+                    id: 1,
+                }
+            },
         },
     });
 
+    await prisma.wallet.create({
+        data: {
+            user_id: user.id,
+            balance: 0,
+            stake: 0,
+        }
+
+    })
+
     return new Response(JSON.stringify({ success: true, message: 'Utilizador criado com successo!', username: user.username }), {
         status: 200,
-        headers: {
-            'Content-Type': 'aplication/json',
-        },
     });
 }
