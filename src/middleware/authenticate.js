@@ -7,7 +7,7 @@ export async function middlewareAuth(req) {
   const url = req.nextUrl.clone();
 
   if (pathname === '/auth' && token) {
-    url.pathname = '/HomePage';
+    url.pathname = '/dashboard';
     return NextResponse.redirect(url);
   }
 

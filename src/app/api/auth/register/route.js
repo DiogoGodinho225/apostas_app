@@ -31,27 +31,31 @@ export async function POST(request) {
 
     const password_hash = await bcrypt.hash(password, 12);
 
-    const user = await prisma.user.create({
-        data: {
-            username,
-            email,
-            password_hash,
-            image: {
-                connect: {
-                    id: 1,
-                }
+    await prisma.$transaction(async (transaction) => {
+        const user = await transaction.user.create({
+            data: {
+                username,
+                email,
+                password_hash,
+                image: {
+                    connect: {
+                        id: 1,
+                    }
+                },
             },
-        },
-    });
+        });
 
-    await prisma.wallet.create({
-        data: {
-            user_id: user.id,
-            balance: 0,
-            stake: 0,
-        }
+        await transaction.wallet.create({
+            data: {
+                user_id: user.id,
+                balance: 0,
+                stake: 0,
+            }
 
+        })
     })
+
+
 
     return new Response(JSON.stringify({ success: true, message: 'Utilizador criado com successo!', username: user.username }), {
         status: 200,

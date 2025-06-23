@@ -1,6 +1,11 @@
+import '@/styles/components/footer.css';
+
 const Footer = () =>{
+
+    const date = new Date().getFullYear();
+
     return(
-        <p>Hello world!!</p>
+        <p>&copy; {date} - Desenvolvida por Diogo Godinho</p>
     );
 }
 

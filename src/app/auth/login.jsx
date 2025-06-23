@@ -38,7 +38,7 @@ const LoginForm = () => {
                     setSuccess(true);
                     setMessage('Login Efetuado!');
                     localStorage.setItem('HasLoggedIn', true);
-                    router.push('/HomePage');
+                    router.push('/dashboard');
                 }else{
                     setSuccess(false);
                     setMessage('Credenciais Inválidas!');

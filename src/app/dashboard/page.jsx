@@ -2,13 +2,13 @@
 import React from "react";
 import { useEffect } from 'react';
 
-const HomePage = () => {
+const Dashboard = () => {
 
     return (
         <div>
-            
+            <p>Aqui vai ser gerada a Dashboard</p>
         </div>
     );
 }
 
-export default HomePage;
+export default Dashboard;
