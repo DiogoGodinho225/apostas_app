@@ -1,8 +1,10 @@
-import prisma from "@/lib/prisma"
+import prisma from "@/lib/prisma" 
 
 export async function PUT(request) {
 
     const { id, depositValue } = await request.json();
+
+    const depositAmount = parseFloat(depositValue);
 
     if (!id) {
         return new Response(JSON.stringify({ success: false, message: 'Dados não fornecidos!' }), {
@@ -10,7 +12,7 @@ export async function PUT(request) {
         });
     }
 
-    if (depositValue <= 0) {
+    if (depositAmount <= 0) {
         return new Response(JSON.stringify({ success: false, message: 'O depósito deve ser superior a 0!' }), {
             status: 200,
         })
@@ -19,8 +21,7 @@ export async function PUT(request) {
     const wallet = await prisma.wallet.findFirst({ where: { user_id: id } });
 
     if (wallet) {
-
-        const balance = wallet.balance += depositValue;
+        const balance = wallet.balance + depositAmount;
 
         await prisma.$transaction(async (transaction) => {
             await transaction.wallet.update({ where: { id: wallet.id }, data: { balance: balance } });
@@ -37,7 +38,7 @@ export async function PUT(request) {
                             id: 1,
                         }
                     },
-                    amount: depositValue,
+                    amount: depositAmount,
                     balance: balance,
                 }
             })

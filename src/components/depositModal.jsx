@@ -5,15 +5,14 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
-import Loading from '@/utils/loading';
-
-
+import { toast } from 'react-hot-toast';
+import { IoLogoEuro } from "react-icons/io5";
 
 const DepositModal = ({ setShowModal, fetchUser }) => {
 
     const [depositValue, setDepositValue] = useState(0);
     const [loading, setLoading] = useState(false);
-    const { data: status, session } = useSession;
+    const { data: session, status } = useSession();
     const router = useRouter();
 
     const handleDeposit = async (e) => {
@@ -35,6 +34,7 @@ const DepositModal = ({ setShowModal, fetchUser }) => {
             } else {
                 toast.success(result.data.message);
                 fetchUser();
+                setDepositValue(0);
             }
 
         } catch (error) {
@@ -49,7 +49,7 @@ const DepositModal = ({ setShowModal, fetchUser }) => {
         <>
             <div className="overlay">
                 <div className='modal-deposit'>
-                    <button onClick={() => setShowModal(false)}><FaTimes /></button>
+                    <button disabled={loading} onClick={() => setShowModal(false)}><FaTimes /></button>
                     <Form depositValue={depositValue} setDepositValue={setDepositValue} handleDeposit={handleDeposit} loading={loading} />
                 </div>
             </div>
@@ -71,7 +71,10 @@ const Input = ({ depositValue, setDepositValue }) => {
     return (
         <div className="input-group">
             <label>Insere o montante a depositar</label>
-            <input type='number' value={depositValue} onChange={(e) => setDepositValue(e.target.value)}></input>
+            <div className='input-container'>
+                <input type='number' value={depositValue} onChange={(e) => setDepositValue(e.target.value)}></input>
+                <label className='euro-icon'><IoLogoEuro  /></label>
+            </div>
         </div>
     );
 }
@@ -79,7 +82,7 @@ const Input = ({ depositValue, setDepositValue }) => {
 const Button = ({ loading }) => {
 
     return (
-        <button type='submit'>{loading ? (<Loading />) : 'Depositar'}</button>
+        <button type='submit'>{loading ? ('A depositar...') : 'Depositar'}</button>
     );
 }
 

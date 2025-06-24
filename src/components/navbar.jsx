@@ -43,8 +43,6 @@ const Navbar = () => {
         }
     }
 
-
-
     useEffect(() => {
         if (status === "authenticated") {
             fetchUser();
@@ -56,10 +54,10 @@ const Navbar = () => {
         <>
             <nav className={firaSans.className}>
                 <ul>
-                    <NavLink active={pathname === '/dashboard' ? 'active' : ''} route={'/Dashboard'} name={'Dashboard'} />
-                    <NavLink active={pathname === '/Apostas' ? 'active' : ''} route={'/Apostas'} name={'Apostas'} />
-                    <NavLink active={pathname === '/Leagues' ? 'active' : ''} route={'/Leagues'} name={'Ligas'} />
-                    <NavLink active={pathname === '/Teams' ? 'active' : ''} route={'/Teams'} name={'Equipas'} />
+                    <NavLink active={pathname === '/dashboard' ? 'active' : ''} route={'/dashboard'} name={'Dashboard'} />
+                    <NavLink active={pathname === '/bets' ? 'active' : ''} route={'/bets'} name={'Apostas'} />
+                    <NavLink active={pathname === '/leagues' ? 'active' : ''} route={'/leagues'} name={'Ligas'} />
+                    <NavLink active={pathname === '/teams' ? 'active' : ''} route={'/teams'} name={'Equipas'} />
                 </ul>
                 <Balance balance={balance} setShowModal={setShowModal} />
                 <Profile url={url} />

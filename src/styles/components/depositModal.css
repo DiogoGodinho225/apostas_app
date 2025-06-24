@@ -16,8 +16,9 @@
 .modal-deposit{
     background-color: var(--modal-background);
     width: 24vw;
-    height: 24vw;
+    height: 18vw;
     border-radius: 4%;
+    position: relative;
 }
 
 .modal-deposit label{
@@ -32,4 +33,75 @@
     cursor: pointer;
     padding: 3%;
     font-size: 0.9vw;
+    padding: 0.5vw;
+}
+
+.modal-deposit button[type="submit"]{
+    background-color: var(--primary-color);
+    color: white;
+    width: 100%;
+    border-radius: 0.3vw;
+    position: relative;
+    font-weight: bold;
+}
+
+.modal-deposit form{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    gap: 3vw;
+    width: 60%;
+    height: 60%;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-deposit .input-group{
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+    width: 100%;
+    text-align: center;
+}
+
+.modal-deposit .input-group label{
+    font-size: 1vw;
+}
+
+.modal-deposit input{
+    width: 100%;
+    border-radius: 0.3vw;
+    outline: none;
+    background-color: var(--modal-input);
+    position: relative;
+    color: white;
+    text-align: center;
+    height: 3vw;
+    font-size: 1.5vw;
+    padding: 10%;
+    border: 1px solid black;
+}
+
+.modal-deposit .input-container{
+    display: flex;
+    position: relative;
+}
+
+.modal-deposit .input-container .euro-icon{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    right: 1.5vw;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5vw;
+}
+
+.modal-deposit input::-webkit-inner-spin-button,
+.modal-deposit input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

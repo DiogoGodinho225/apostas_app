@@ -11,11 +11,11 @@ export default function RootLayout({ children }) {
 
   const pathname = usePathname();
 
-  if (pathname === '/auth') {
+  if (pathname === '/auth' || pathname === '/wallet') {
     return (
       <html className={firaSans.className} lang="pt">
         <body>
-          <main>
+          <main className='blank-container'>
             <SessionProvider>
               <Toaster position="top-right"
               toastOptions={{
@@ -47,7 +47,7 @@ export default function RootLayout({ children }) {
             <NavBar />
           </header>
 
-          <main>{children}</main>
+          <main className='principal-container'>{children}</main>
 
           <footer>
             <Footer />

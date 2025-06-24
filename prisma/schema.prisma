@@ -9,40 +9,40 @@ datasource db {
 }
 
 model Bet {
-  id         Int      @id @default(autoincrement())
+  id         Int         @id @unique(map: "id_UNIQUE") @default(autoincrement())
   user_id    Int
-  match_id   Int
-  league_id  Int
-  bet_type   String   @db.VarChar(100)
-  prediction String   @db.VarChar(100)
+  bet_type   Int
   stake      Int
-  odds       Float    @db.Float
-  result     String   @db.VarChar(100)
-  profit     Float    @db.Float
-  created_at DateTime @default(now()) @db.DateTime(0)
-  updated_at DateTime @default(now()) @db.DateTime(0)
-  user       User     @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "fk_bets_users1")
+  odds       Float       @db.Float
+  result     String      @db.VarChar(100)
+  profit     Float       @db.Float
+  created_at DateTime    @default(now()) @db.DateTime(0)
+  updated_at DateTime    @default(now()) @db.DateTime(0)
+  bet_lines  BetLine[]
+  user       User        @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "fk_bets_users1")
 
   @@index([user_id], map: "fk_bets_users1_idx")
   @@map("bets")
 }
 
 model Image {
-  id         Int      @id @default(autoincrement())
+  id         Int      @id @unique(map: "id_UNIQUE") @default(autoincrement())
   url        String   @db.VarChar(60)
   created_at DateTime @default(now()) @db.DateTime(0)
   updated_at DateTime @default(now()) @db.DateTime(0)
-  users      User[]
+  leagues    League?
+  teams      Team?
+  users      User?
 
   @@map("images")
 }
 
 model User {
-  id                 Int                 @id @default(autoincrement())
+  id                 Int                 @id @unique(map: "id_UNIQUE") @default(autoincrement())
   username           String              @unique(map: "username_UNIQUE") @db.VarChar(50)
   email              String              @unique(map: "email_UNIQUE") @db.VarChar(100)
   password_hash      String              @db.VarChar(255)
-  profile_pic_id     Int                 @default(1)
+  profile_pic_id     Int                 @default(1) @unique
   last_login         DateTime            @db.DateTime(0)
   status             String              @default("1") @db.VarChar(45)
   created_at         DateTime            @default(now()) @db.DateTime(0)
@@ -57,7 +57,7 @@ model User {
 }
 
 model Wallet {
-  id         Int      @id @default(autoincrement())
+  id         Int      @id @unique(map: "id_UNIQUE") @default(autoincrement())
   user_id    Int      @unique
   balance    Float    @db.Float
   stake      Float    @default(0) @db.Float
@@ -70,28 +70,75 @@ model Wallet {
 }
 
 model WalletTransaction {
-  id                Int               @id @default(autoincrement())
-  user_id           Int
-  type_id           Int
-  amount            Float             @db.Float
-  balance           Float             @db.Float
-  created_at        DateTime          @default(now()) @db.DateTime(0)
-  updated_at        DateTime          @default(now()) @db.DateTime(0)
-  transaction_type  TransactionType @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_wallet_transactions_transactions_types1")
-  user              User              @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "fk_wallet_transactions_users1")
+  id               Int             @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  user_id          Int
+  type_id          Int
+  amount           Float           @db.Float
+  balance          Float           @db.Float
+  created_at       DateTime        @default(now()) @db.DateTime(0)
+  updated_at       DateTime        @default(now()) @db.DateTime(0)
+  transaction_type TransactionType @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_wallet_transactions_transactions_types1")
+  user             User            @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "fk_wallet_transactions_users1")
 
   @@index([user_id], map: "fk_wallet_transactions_users1_idx")
-  @@index([type_id], map: "fk_wallet_transactions_transactions_types1_idx")
+  @@index([type_id], map: "fk_wallet_transactions_trasactions_types1_idx")
   @@map("wallet_transactions")
 }
 
-
 model TransactionType {
-  id                  Int                 @id @default(autoincrement())
+  id                  Int                 @id @unique(map: "id_UNIQUE") @default(autoincrement())
   name                String              @db.VarChar(100)
   created_at          DateTime            @default(now()) @db.DateTime(0)
   updated_at          DateTime            @default(now()) @db.DateTime(0)
   wallet_transactions WalletTransaction[]
 
   @@map("transactions_types")
+}
+
+model League {
+  id         Int      @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  name       String   @db.VarChar(100)
+  img_id     Int      @unique
+  country    String   @db.VarChar(200)
+  created_at DateTime @default(now()) @db.DateTime(0)
+  updated_at DateTime @default(now()) @db.DateTime(0)
+  bet_lines  BetLine[]
+  image      Image    @relation(fields: [img_id], references: [id], map: "fk_leagues_images1")
+  teams      Team[]
+
+  @@index([img_id], map: "fk_leagues_images1_idx")
+  @@map("leagues")
+}
+
+model Team {
+  id         Int      @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  name       String   @db.VarChar(200)
+  league_id  Int
+  img_id     Int      @unique
+  created_at DateTime @default(now()) @db.DateTime(0)
+  updated_at DateTime @default(now()) @db.DateTime(0)
+  images     Image    @relation(fields: [img_id], references: [id], map: "fk_teams_images1")
+  leagues    League   @relation(fields: [league_id], references: [id], map: "fk_teams_leagues1")
+
+  @@index([img_id], map: "fk_teams_images1_idx")
+  @@index([league_id], map: "fk_teams_leagues1_idx")
+  @@map("teams")
+}
+
+model BetLine {
+  id         Int      @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  bet_id     Int
+  league_id  Int
+  match      String   @db.VarChar(200)
+  prediction String   @db.VarChar(200)
+  odd        Float    @db.Float
+  status     Int
+  created_at DateTime @default(now()) @db.DateTime(0)
+  updated_at DateTime @default(now()) @db.DateTime(0)
+  bets       Bet      @relation(fields: [bet_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_bet_lines_bets1")
+  leagues    League   @relation(fields: [league_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_bet_lines_leagues1")
+
+  @@index([bet_id], map: "fk_bet_lines_bets1_idx")
+  @@index([league_id], map: "fk_bet_lines_leagues1_idx")
+  @@map("bet_lines")
 }
