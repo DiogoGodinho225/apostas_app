@@ -21,7 +21,8 @@ export async function POST(request) {
 
     const arrayBuffer = await image.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    const fileName = `${name}-${Date.now()}.png`;
+    const safeName = name.replace(/\s+/g, '-');
+    const fileName = `${safeName}-${Date.now()}.png`;
 
     await prisma.$transaction(async (transaction) => {
 
@@ -53,7 +54,7 @@ export async function POST(request) {
         const filePath = path.join(process.cwd(), 'public', 'images', 'leagues', fileName);
         fs.writeFileSync(filePath, buffer);
     }else{
-        return new Response(JSON.stringify({ succes: false, message: 'Erro ao criar liga!' }), { status: 200 });
+        return new Response(JSON.stringify({ succes: false, message: 'Erro ao criar liga!' }), { status: 200  });
     }
 
     return new Response(JSON.stringify({ succes: true, message: 'Nova liga adicionada!', league }), { status: 200 });
