@@ -4,6 +4,8 @@ nav {
     align-items: center;
     justify-content: center;
     width: 100%;
+    background-color: var(--primary-color);
+    z-index: 50;
 }
 
 nav ul {

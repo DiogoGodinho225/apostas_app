@@ -1,11 +1,14 @@
-footer{
+footer {
     width: 100%;
     display: flex;
-    position: absolute;
+    position: fixed;
+    left: 0;
     bottom: 0;
     justify-content: center;
     align-items: center;
-    height: 6vh;
+    height: 3.5vw;
+    z-index: 100;
+    background-color: var(--primary-color);
 }
 
 footer p{

@@ -1,0 +1,59 @@
+.leagues-container{
+    padding: 0 3vw;
+
+}
+
+.leagues-list {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 1vw;
+    margin-top: 3.5vw;
+    padding-bottom: 4vw;
+    
+}
+
+.card-league{
+    width: 19.14%;
+    background-color: var(--secondary-color);
+    height: 20vw;
+    border-radius: 0.8vw;
+}
+
+.leagues-container .card-top{
+    width: 100%;
+    background-color: rgb(54, 54, 54);
+    border-top-left-radius: 0.8vw;
+    border-top-right-radius: 0.8vw;
+    height: 50%;
+    position: relative;
+}
+
+.card-league .card-top img{
+    width: 35%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.card-league .card-body {
+    padding: 0.5vw;
+    font-size: 0.8vw;
+}
+
+.card-league .card-body .league-details {
+    padding: 0.5vw;
+}
+
+.card-league .card-body .league-details p span{
+    font-weight: bold;
+}
+
+.card-league .card-body .league-details p{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.3vw;
+}
+
+

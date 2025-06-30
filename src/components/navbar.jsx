@@ -17,7 +17,7 @@ const Navbar = () => {
     const { data: session, status } = useSession();
     const router = useRouter();
 
-    const [url, setUrl] = useState(process.env.NEXT_PUBLIC_APP_URL + 'images/user.png');
+    const [url, setUrl] = useState(process.env.NEXT_PUBLIC_APP_URL + 'images/users/user.png');
     const [balance, setBalance] = useState(0);
     const [showModal, setShowModal] = useState(false);
 
@@ -39,7 +39,7 @@ const Navbar = () => {
             }
 
         } catch (error) {
-            setUrl(process.env.NEXT_PUBLIC_APP_URL + 'images/user.png');
+            setUrl(process.env.NEXT_PUBLIC_APP_URL + 'images/users/user.png');
         }
     }
 

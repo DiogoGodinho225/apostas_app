@@ -14,6 +14,9 @@ export async function PUT(request) {
     const name = formData.get('name');
     const country = formData.get('country');
     const image = formData.get('image');
+    const type = parseInt(formData.get('type'));
+    const tier = parseInt(formData.get('tier'));
+    const season = formData.get('season');
 
     if (!id) {
         return new Response(JSON.stringify({ success: false, message: 'Dados não recebidos!' }), { status: 200 });
@@ -72,6 +75,18 @@ export async function PUT(request) {
 
     if (country) {
         data.country = country;
+    }
+
+    if (type) {
+        data.type = type;
+    }
+
+    if (tier) {
+        data.tier = tier;
+    }
+
+    if (season) {
+        data.season = season;
     }
 
     await prisma.league.update({

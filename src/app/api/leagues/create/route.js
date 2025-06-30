@@ -14,8 +14,11 @@ export async function POST(request) {
     const name = formData.get('name');
     const country = formData.get('country');
     const image = formData.get('image');
+    const type = parseInt(formData.get('type'));
+    const tier = parseInt(formData.get('tier'));
+    const season = formData.get('season');
 
-    if (!name || !country || !image) {
+    if (!name || !country || !image || !type || !tier || !season ) {
         return new Response(JSON.stringify({ succes: false, message: 'Dados não fornecidos!' }), { status: 200 });
     }
 
@@ -40,7 +43,10 @@ export async function POST(request) {
                     connect: {
                         id: image.id
                     }
-                }
+                },
+                type: type,
+                tier: tier,
+                season: season
             }
         })
 

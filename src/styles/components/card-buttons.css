@@ -1,0 +1,39 @@
+.card-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 0.5vw;
+    padding: 0.3vw;
+}
+
+.card-buttons button {
+    width: 18%;
+    padding: 0.4vw;
+    font-size: 0.7vw;
+    border-radius: 0.5vw;
+    transition: transform 0.4s ease-in-out;
+}
+
+.card-buttons button:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+   
+}
+
+.card-buttons .btn-view{
+    background-color: blue;
+    color: white;
+    border: none;
+}
+
+.card-buttons .btn-edit{
+    background-color: var(--button-color);
+    color: white;
+    border: none;
+}
+
+.card-buttons .btn-delete{
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+}

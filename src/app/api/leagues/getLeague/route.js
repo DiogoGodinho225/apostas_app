@@ -7,7 +7,7 @@ export async function GET(request){
         return new Response(JSON.stringify({success: false, message: 'Dados não recebidos!'}), {status: 200});
     }
 
-    const league = await prisma.league.findFirst({where: {id: parseInt(id)}, include: {image: true}});
+    const league = await prisma.league.findFirst({where: {id: parseInt(id)}, include: {image: true, teams_leagues: {include: {teams: true}}}});
 
     if(!league){
         return new Response(JSON.stringify({success: false, message: 'Liga não encontrada!'}), {status: 200});

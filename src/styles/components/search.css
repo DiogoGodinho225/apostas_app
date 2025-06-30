@@ -1,0 +1,35 @@
+.search-container {
+    position: relative;
+    float: right;
+    display: flex;
+}
+
+.search-container input {
+    border: 1px solid white;
+    outline: none;
+    width: 14vw;
+    height: 1.7vw; 
+    padding: 0.7vw;
+    padding-right: 2.5vw;
+    box-sizing: border-box;
+    border-radius: 1vw;
+    font-size: 0.7vw;
+}
+
+.search-container .search-icon {
+    color: white;
+    background-color: black;
+    position: absolute;
+    right: 0.3vw; 
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.3vw;  
+    height: 1.3vw;
+    border-radius: 50%;
+    pointer-events: none;
+    font-size: 0.8vw;
+    transition: right 0.2s;
+}
