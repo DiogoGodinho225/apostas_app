@@ -3,6 +3,8 @@ import '@/styles/auth/login.css'
 import { useEffect, useState } from 'react';
 import { signIn } from "next-auth/react";
 import { redirect, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 const LoginForm = () => {
 
@@ -21,30 +23,44 @@ const LoginForm = () => {
         setUser(prev => ({ ...prev, [name]: value }));
     }
 
+    const searchParams = useSearchParams();
+    const error = searchParams.get('error');
+
+    useEffect(() => {
+        const hasLoggedIn = localStorage.getItem('HasLoggedIn');
+
+        if (error === 'token_invalid' && hasLoggedIn) {
+            toast.error("Sessão expirada!!");
+            localStorage.removeItem('HasLoggedIn');
+        } else if (error === 'token_invalid' && !hasLoggedIn) {
+            toast.error("Por favor, faça login para continuar!");
+        }
+    }, [error])
+
     const handleLogin = async (e) => {
         e.preventDefault();
         setLoading(true);
 
-        if(user){
-            try{
-                
-                const result = await signIn('credentials',{
+        if (user) {
+            try {
+
+                const result = await signIn('credentials', {
                     username: user.username,
                     password: user.password,
                     redirect: false,
                 });
 
-                if(result.ok){
+                if (result.ok) {
                     setSuccess(true);
                     setMessage('Login Efetuado!');
                     localStorage.setItem('HasLoggedIn', true);
                     router.push('/dashboard');
-                }else{
+                } else {
                     setSuccess(false);
                     setMessage('Credenciais Inválidas!');
                 }
 
-            }catch(error){
+            } catch (error) {
                 console.error(error);
             }
         }
@@ -73,7 +89,7 @@ const FormGroup = ({ label, className, type, name, handleInputChange }) => {
     );
 }
 
-const SubmitBtn = ({loading}) => {
+const SubmitBtn = ({ loading }) => {
 
     console.log(loading);
 

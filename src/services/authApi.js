@@ -14,4 +14,6 @@ export const register = async (user) =>{
         console.error('Error:', error);
         throw error;
     }
+
+    return null;
 }

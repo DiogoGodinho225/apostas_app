@@ -56,7 +56,7 @@ const Navbar = () => {
                 <ul>
                     <NavLink active={pathname === '/dashboard' ? 'active' : ''} route={'/dashboard'} name={'Dashboard'} />
                     <NavLink active={pathname === '/bets' ? 'active' : ''} route={'/bets'} name={'Apostas'} />
-                    <NavLink active={pathname === '/leagues' ? 'active' : ''} route={'/leagues'} name={'Ligas'} />
+                    <NavLink active={pathname === '/leagues/index' ? 'active' : ''} route={'/leagues/index'} name={'Ligas'} />
                     <NavLink active={pathname === '/teams' ? 'active' : ''} route={'/teams'} name={'Equipas'} />
                 </ul>
                 <Balance balance={balance} setShowModal={setShowModal} />

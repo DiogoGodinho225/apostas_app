@@ -18,7 +18,7 @@ export async function POST(request) {
     const tier = parseInt(formData.get('tier'));
     const season = formData.get('season');
 
-    if (!name || !country || !image || !type || !tier || !season ) {
+    if (!name || !country || !image || !type || !season ) {
         return new Response(JSON.stringify({ succes: false, message: 'Dados não fornecidos!' }), { status: 200 });
     }
 

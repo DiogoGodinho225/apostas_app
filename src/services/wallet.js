@@ -13,4 +13,6 @@ export const deposit = async (id, depositValue) =>{
     }catch(error){
         console.log(error);
     }
+
+    return null;
 }
