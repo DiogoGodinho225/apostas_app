@@ -1,24 +1,25 @@
-.leagues-container{
+.teams-container{
     padding: 0 3vw;
+    position: relative;
 }
 
-.leagues-list {
+.teams-list {
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
     gap: 1vw;
-    margin-top: 3.5vw;
+    margin-top: 6vw;
     padding-bottom: 4vw;
 }
 
-.card-league{
+.card-team{
     width: 19.13%;
     background-color: var(--secondary-color);
     height: 20vw;
     border-radius: 0.8vw;
 }
 
-.leagues-container .card-top{
+.teams-container .card-top{
     width: 100%;
     background-color: rgb(54, 54, 54);
     border-top-left-radius: 0.8vw;
@@ -27,7 +28,7 @@
     position: relative;
 }
 
-.card-league .card-top img{
+.card-team .card-top img{
     width: 35%;
     position: absolute;
     left: 50%;
@@ -35,23 +36,48 @@
     transform: translate(-50%, -50%);
 }
 
-.card-league .card-body {
+.card-team .card-body {
     padding: 0.5vw;
     font-size: 0.8vw;
 }
 
-.card-league .card-body .league-details {
+.card-team .card-body .team-details {
     padding: 0.5vw;
 }
 
-.card-league .card-body .league-details p span{
+.card-team .card-body .team-details p span{
     font-weight: bold;
 }
 
-.card-league .card-body .league-details p{
+.card-team .card-body .team-details p{
     display: flex;
     justify-content: space-between;
     margin-top: 0.3vw;
 }
 
+.team-filter{
+    position: fixed;
+    z-index: 5;
+    width: calc(100% - 6vw);
+    top: 7.8vw;
+    background-color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 1%;
+}
+
+.team-filter select{
+    outline: none;
+    border: none;
+    font-size: 0.8vw;
+    border-radius: 1vw;
+    padding: 0.2vw 0.5vw;
+    width: 10vw;
+}
+
+.team-filter label{
+    color: white;
+    font-size: 0.8vw;
+
+}
 

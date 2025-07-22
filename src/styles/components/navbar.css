@@ -24,6 +24,11 @@ nav ul {
     font-size: 0.8vw;
 }
 
+.nav-link:hover {
+    opacity: 70%;
+    transition: opacity 0.3s ease-in-out;
+}
+
 .nav-link.active {
     background-color: var(--secondary-color);
     color: black;
@@ -54,7 +59,7 @@ nav ul {
     background-color: var(--secondary-color);
 }
 
-.balanceZone{
+.balanceZone {
     border: 1px solid var(--secondary-color);
     width: 4.8vw;
     display: flex;
@@ -69,16 +74,16 @@ nav ul {
     font-size: 0.8vw;
 }
 
-.balanceZone .plus-icon{
+.balanceZone .plus-icon {
     transition: all 0.3s ease-in-out;
 }
 
-.balanceZone .plus-icon:hover{
+.balanceZone .plus-icon:hover {
     transform: scale(1.1);
     cursor: pointer;
 }
 
-nav button{
+nav button {
     border: none;
     background: white;
     display: flex;

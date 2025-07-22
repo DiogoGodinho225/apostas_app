@@ -54,10 +54,10 @@ const Navbar = () => {
         <>
             <nav className={firaSans.className}>
                 <ul>
-                    <NavLink active={pathname === '/dashboard' ? 'active' : ''} route={'/dashboard'} name={'Dashboard'} />
-                    <NavLink active={pathname === '/bets' ? 'active' : ''} route={'/bets'} name={'Apostas'} />
-                    <NavLink active={pathname === '/leagues/index' ? 'active' : ''} route={'/leagues/index'} name={'Ligas'} />
-                    <NavLink active={pathname === '/teams' ? 'active' : ''} route={'/teams'} name={'Equipas'} />
+                    <NavLink active={pathname.startsWith('/dashboard') ? 'active' : ''} route={'/dashboard'} name={'Dashboard'} />
+                    <NavLink active={pathname.startsWith('/bets') ? 'active' : ''} route={'/bets'} name={'Apostas'} />
+                    <NavLink active={pathname.startsWith('/leagues')  ? 'active' : ''} route={'/leagues/index'} name={'Ligas'} />
+                    <NavLink active={pathname.startsWith('/teams') ? 'active' : ''} route={'/teams/index'} name={'Equipas'} />
                 </ul>
                 <Balance balance={balance} setShowModal={setShowModal} />
                 <Profile url={url} />

@@ -1,0 +1,31 @@
+.float-btn{
+    position: fixed;
+    right: 3vw;
+    bottom: 3.5vw;
+    animation: bounce 2s infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    width: 1.7vw;
+    height: 1.7vw;
+    border-radius: 50%;
+    font-size: 0.8vw;
+    cursor: pointer;
+    background-color: var(--button-color);
+    z-index: 50;
+}
+
+.float-btn:hover{
+    animation: none;
+    opacity: 80%;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-30%);
+    }
+}

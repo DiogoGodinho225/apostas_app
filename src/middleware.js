@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function middleware(req) {
   const pathname = req.nextUrl.pathname;
-
+  
   if (pathname.startsWith('/api/auth')) {
     return NextResponse.next();
   }
@@ -14,6 +14,7 @@ export async function middleware(req) {
     if (res) return res;
   }
 
+  
   return middlewareAuth(req);
 }
 

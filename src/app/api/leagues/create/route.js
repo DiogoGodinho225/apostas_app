@@ -19,7 +19,7 @@ export async function POST(request) {
     const season = formData.get('season');
 
     if (!name || !country || !image || !type || !season ) {
-        return new Response(JSON.stringify({ succes: false, message: 'Dados não fornecidos!' }), { status: 200 });
+        return new Response(JSON.stringify({ success: false, message: 'Dados não fornecidos!' }), { status: 200 });
     }
 
     const arrayBuffer = await image.arrayBuffer();
@@ -60,8 +60,8 @@ export async function POST(request) {
         const filePath = path.join(process.cwd(), 'public', 'images', 'leagues', fileName);
         fs.writeFileSync(filePath, buffer);
     }else{
-        return new Response(JSON.stringify({ succes: false, message: 'Erro ao criar liga!' }), { status: 200  });
+        return new Response(JSON.stringify({ success: false, message: 'Erro ao criar liga!' }), { status: 200  });
     }
 
-    return new Response(JSON.stringify({ succes: true, message: 'Nova liga adicionada!', league }), { status: 200 });
+    return new Response(JSON.stringify({ success: true, message: 'Nova liga adicionada!', league }), { status: 200 });
 }

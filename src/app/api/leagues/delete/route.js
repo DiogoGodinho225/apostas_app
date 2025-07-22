@@ -9,10 +9,12 @@ export async function DELETE(request) {
         return new Response(JSON.stringify({success: false, message: 'Dados não recebidos!'}), {status: 200});
     }
 
-    const league = await prisma.league.findFirst({where: {id: parseInt(id)}, include: {image: true}});
+    const league = await prisma.league.findFirst({where: {id: parseInt(id)}, include: {image: true, teams_leagues: true}});
 
     if(!league){
         return new Response(JSON.stringify({success: false, message: 'Liga não encontrada!'}), {status: 200});
+    }else if(league.teams_leagues.length > 0){
+        return new Response(JSON.stringify({success: false, message: 'Esta liga contém esquipas associadas!'}))
     }
 
     let imagePath = null;

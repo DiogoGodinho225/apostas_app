@@ -1,0 +1,70 @@
+.update-league-container{
+    padding: 3vw 3vw;
+    display: flex;
+    justify-content: center;
+}
+
+.update-league-container form{
+    background-color: var(--secondary-color);
+    padding: 1.5vw;
+    border-radius: 1vw;
+    width: 60%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.update-league-container form .row{
+    display: flex;
+    gap: 10%;
+    margin-top: 0.8vw;
+}
+
+.update-league-container .form-group{
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    gap: 0.3vw;
+}
+
+.update-league-container .form-group input[type="text"]{
+    border: 1px solid rgb(149, 149, 149);
+    padding: 0.3vw;
+    font-size: 0.7vw;
+    border-radius: 0.5vw;
+    outline: none;
+}
+
+.update-league-container .form-group select{
+    border: 1px solid rgb(149, 149, 149);
+    padding: 0.3vw;
+    font-size: 0.7vw;
+    border-radius: 0.5vw;
+    outline: none;
+}
+
+.update-league-container .form-group label{
+    color: rgb(149, 149, 149);
+    font-size: 0.7vw;
+}
+
+.update-league-container .row:last-child{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.update-league-container button[type="submit"]{
+    background-color: var(--button-color);
+    border: none;
+    padding: 0.3vw;
+    border-radius: 0.5vw;
+    font-weight: bold;
+    font-size: 0.7vw;
+    cursor: pointer;
+}
+
+.update-league-container button[type="submit"]:hover{
+    opacity: 80%;
+}
+
+.update-league-container .alert{
+    color: var(--primary-color);
+}

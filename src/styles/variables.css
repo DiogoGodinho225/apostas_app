@@ -2,6 +2,7 @@
     --primary-color: #e81e2b;
     --secondary-color: #ffffff;
     --button-color: #FFCC00;
+    --view-background: #181c2c;
 
     /* Login/Register colors */
     --border-color: rgb(223, 223, 223);
@@ -49,3 +50,4 @@ h2.page-title {
     width: 100%;
     font-size: 0.9vw;
 }
+

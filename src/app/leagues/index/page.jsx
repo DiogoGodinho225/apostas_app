@@ -4,40 +4,19 @@ import { useEffect, useState } from 'react';
 import Search from '@/components/search';
 import '@/styles/leagues/page.css';
 import CardButtons from '@/components/card-buttons';
-import { getLeagues, deleteLeague } from "@/services/leaguesApi";
+import {deleteLeague } from "@/services/leaguesApi";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Pagination from "@/components/pagination";
+import FloatBtn from "@/components/floatBtn";
+import { useLeagues } from "@/context/leaguesContext";
 
 const Leagues = () => {
 
-    const [leagues, setLeagues] = useState([]);
-    const [loading, setLoading] = useState(false);
     const [paginatedLeagues, setPaginatedLeagues] = useState([]);
     const router = useRouter();
     const [search, setSearch] = useState('');
-
-    const fetchLeagues = async () => {
-        setLoading(true);
-        try {
-            const response = await getLeagues();
-            if (response.status === 200 && response.data.success === true) {
-                setLeagues(response.data.leagues);
-            } else if (response.data.success === false) {
-                toast.error(response.data.message);
-            } else if (response.status === 401) {
-                router.push('/auth?error=token_invalid');
-            }
-        } catch (error) {
-            console.error(error);
-            toast.error('Erro ao ir buscar as ligas!');
-        }
-        setLoading(false);
-    }
-
-    useEffect(() => {
-        fetchLeagues();
-    }, []);
+    const {leagues, setLeagues, loading} = useLeagues();
 
     useEffect(() => {
         document.title = 'Leagues';
@@ -103,11 +82,15 @@ const Leagues = () => {
                 }
             </div>
             <Pagination list={leagues} itemsPerPage={10} setPagination={setPaginatedLeagues} />
+            <FloatBtn  route={() => router.push('/leagues/create')}/>
         </div>
     );
 }
 
 const CardLeague = ({ league, handleDelete }) => {
+
+    const router = useRouter();
+
     return (
         <div className="card-league">
             <div className="card-top">
@@ -121,7 +104,7 @@ const CardLeague = ({ league, handleDelete }) => {
                     <p><span>Divisão: </span>{league.tier === 1 ? '1ª Divisão' : league.tier === 2 ? '2ª Divisão' : league.tier === 3 ? '3ª Divisão' : 'Desconhecida'}</p>
                     <p><span>Temporada: </span>{league.season}</p>
                 </div>
-                <CardButtons onBtnViewClick={null} onBtnEditClick={null} onBtnDeleteClick={() => handleDelete(league.id)} />
+                <CardButtons onBtnViewClick={() => router.push(`/leagues/view?id=${league.id}`)} onBtnEditClick={() => router.push(`/leagues/update?id=${league.id}`)} onBtnDeleteClick={() => handleDelete(league.id)} />
             </div>
         </div>
     );

@@ -6,6 +6,8 @@ import { usePathname } from 'next/navigation';
 import { SessionProvider } from 'next-auth/react';
 import { Toaster } from 'react-hot-toast';
 import { firaSans } from '@/utils/fonts';
+import { LeaguesProvider } from '@/context/leaguesContext';
+import { TeamsProvider } from '@/context/teamsContext';
 
 export default function RootLayout({ children }) {
 
@@ -18,11 +20,11 @@ export default function RootLayout({ children }) {
           <main className='blank-container'>
             <SessionProvider>
               <Toaster position="top-right"
-              toastOptions={{
-                style: {
-                  fontSize: '0.8vw',
-                }
-              }}
+                toastOptions={{
+                  style: {
+                    fontSize: '0.8vw',
+                  }
+                }}
               />
               {children}
             </SessionProvider>
@@ -35,24 +37,28 @@ export default function RootLayout({ children }) {
   return (
     <html className={firaSans.className} lang="pt">
       <body>
-        <SessionProvider>
-           <Toaster position="top-right"
-              toastOptions={{
-                style: {
-                  fontSize: '0.9vw',
-                }
-              }}
+        <TeamsProvider>
+          <LeaguesProvider>
+            <SessionProvider>
+              <Toaster position="top-right"
+                toastOptions={{
+                  style: {
+                    fontSize: '0.9vw',
+                  }
+                }}
               />
-          <header>
-            <NavBar />
-          </header>
+              <header>
+                <NavBar />
+              </header>
 
-          <main className='principal-container'>{children}</main>
+              <main className='principal-container'>{children}</main>
 
-          <footer>
-            <Footer />
-          </footer>
-        </SessionProvider>
+              <footer>
+                <Footer />
+              </footer>
+            </SessionProvider>
+          </LeaguesProvider>
+        </TeamsProvider>
       </body>
     </html>
   );
