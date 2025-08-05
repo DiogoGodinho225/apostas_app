@@ -1,11 +1,12 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { getLeague } from '@/services/leaguesApi';
-import toast from 'react-hot-toast';
+import { AddTeam, DeleteTeam, getLeague } from '@/services/leaguesApi';
+import toast, { ToastBar } from 'react-hot-toast';
 import BackButton from '@/components/goBackButton';
 import '@/styles/leagues/view.css'
-import { FaFolder } from 'react-icons/fa';
+import { FaFolder, FaTimes, FaPlus, FaCheck } from 'react-icons/fa';
+import { useTeams } from '@/context/teamsContext';
 
 const LeagueDetail = () => {
 
@@ -15,6 +16,7 @@ const LeagueDetail = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+    
         document.title = 'League Details';
 
         const oldBg = document.body.style.backgroundColor;
@@ -23,35 +25,37 @@ const LeagueDetail = () => {
         return () => {
             document.body.style.backgroundColor = oldBg;
         };
-    }, []);
+    }, [league]);
 
-    useEffect(() => {
+    const fetchLeague = async () => {
 
-        const fetchLeague = async () => {
+        setLoading(true);
 
-            setLoading(true);
+        let id = searchParams.get('id');
 
-            let id = searchParams.get('id');
+        try {
+            const response = await getLeague(id);
 
-            try {
-                const response = await getLeague(id);
-
-                if (response.status === 200 && response.data.success === true) {
-                    setLeague(response.data.league);
-                } else if (response.data.success === false) {
-                    toast.error(response.data.message);
-                } else if (response.status === 401) {
-                    router.push('/auth?error=token_invalid');
-                }
-
-            } catch (error) {
-                console.error(error);
-                toast.error('Erro ao encontrar a equipa!');
+            if (response.status === 200 && response.data.success === true) {
+                setLeague(response.data.league);
+                document.title = response.data.league.name
+            } else if (response.data.success === false) {
+                toast.error(response.data.message);
+            } else if (response.status === 401) {
+                router.push('/auth?error=token_invalid');
             }
 
-            setLoading(false);
-
+        } catch (error) {
+            console.error(error);
+            toast.error('Erro ao encontrar a equipa!');
         }
+
+        setLoading(false);
+
+    }
+
+
+    useEffect(() => {
 
         fetchLeague();
 
@@ -66,7 +70,7 @@ const LeagueDetail = () => {
             ) :
                 <>
                     <Details league={league} />
-                    <LeagueTeams teams={league.teams_leagues.map(tl => tl.teams)} leagueType={league.type} />
+                    <LeagueTeams teams={league.teams_leagues.map(tl => tl.teams)} leagueType={league.type} leagueId={league.id} fetchLeague={fetchLeague}/>
                 </>
 
             }
@@ -96,9 +100,33 @@ const Details = ({ league }) => {
     );
 }
 
-const LeagueTeams = ({ teams, leagueType }) => {
+const LeagueTeams = ({ teams, leagueType, leagueId, fetchLeague }) => {
     const router = useRouter();
-    
+    const [showModal, setShowModal] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const handleRemoveTeam = async(teamId) =>{
+        setLoading(true);
+
+        try {
+            const response = await DeleteTeam(teamId, leagueId);
+
+            if(response.status === 200 && response.data.success === true){
+                toast.success(response.data.message);
+                fetchLeague();
+            }else if(response.data.success === false){
+                toast.error(response.data.message);
+            }else if(response.status === 401){
+                router.push('/auth?error=token_invalid');
+            }
+            
+        } catch (error) {
+            console.log(error);
+        }
+
+        setLoading(false)
+    }
+
     return (
         <div className="league-teams">
             <h3>Equipas</h3>
@@ -106,39 +134,127 @@ const LeagueTeams = ({ teams, leagueType }) => {
                 <thead>
                     <tr>
                         {leagueType === 2 ? (
-                            <th><BtnAddTeam /></th>
+                            <th><BtnAddTeam setShowModal={setShowModal} showModal={showModal} /></th>
                         ) : null}
                     </tr>
                 </thead>
                 <tbody>
-
                     {
-                        teams.map((t) => (
-                            <tr key={t.id}>
-                                <td>
-                                    <div className="league-team-details">
-                                        <img src={t.images.url} />
-                                        <p>{t.name}</p>
-                                        <button onClick={() => router.push(`/teams/view?id=${t.id}`)}><FaFolder /></button>
-                                    </div>
-                                </td>
+                        teams.length > 0 ? (
+                            teams.map((t) => (
+                                <tr key={t.id}>
+                                    <td>
+                                        <div className="league-team-details">
+                                            <img src={t.images.url} />
+                                            <p>{t.name}</p>
+                                            <div className="btnGroup">
+                                                <button onClick={() => router.push(`/teams/view?id=${t.id}`)}><FaFolder /></button>
+                                                {leagueType === 2 ? (<button disabled={loading} onClick={() => handleRemoveTeam(t.id)}><FaTimes /></button>) : null}
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        ) :
+                            <tr>
+                                <td className="no-teams">Sem Equipas</td>
                             </tr>
-                        ))
+
                     }
                 </tbody>
             </table>
             {
-
+                showModal === true ? (<ModalTeam setShowModal={setShowModal} leagueId={leagueId} fetchLeague={fetchLeague} leagueTeams={teams}/>) : null
             }
         </div>
     );
 }
 
-const BtnAddTeam = () => {
+const BtnAddTeam = ({ setShowModal }) => {
 
     return (
-        <button className='btnAddTeam'>Adicionar Equipa</button>
+        <button onClick={() => setShowModal(true)} className='btnAddTeam'>Adicionar Equipa</button>
     )
 }
+
+const ModalTeam = ({ setShowModal, leagueId, fetchLeague, leagueTeams }) => {
+
+    const [searchTeam, setSearchTeam] = useState('');
+    const [searchTeams, setSearchTeams] = useState([]);
+    const { teams } = useTeams();
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
+
+    useEffect(() => {
+
+        if (searchTeam !== '') {
+            const filtered = teams.filter(t => t.name.toLowerCase().includes(searchTeam.toLowerCase()));
+            setSearchTeams(filtered);
+        } else {
+            setSearchTeams([]);
+        }
+
+    }, [searchTeam]);
+
+    const handleAddTeam = async (teamId) => {
+        setLoading(true);
+
+        try {
+            const response = await AddTeam(teamId, leagueId);
+
+            if (response.status = 200 && response.data.success === true) {
+                fetchLeague();
+                toast.success(response.data.message);
+                setSearchTeam('');
+            } else if (response.data.success === false) {
+                toast.error(response.data.message);
+            } else if (response.status === 401) {
+                router.push('/auth?error=token_invalid');
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error('Erro ao adicionar equipa!')
+        }
+        setLoading(false)
+    }
+
+    const handleButton = (teamId) =>{
+        const filtered = leagueTeams.filter(t => t.id === teamId);
+
+        if(filtered.length > 0){
+            return <button className='btnCheck' disabled ><FaCheck /></button>
+        }
+
+        return <button  className='btnAdd' disabled={loading} onClick={() => handleAddTeam(teamId)}><FaPlus /></button>
+    }
+
+    return (
+        <div className="overlay">
+            <div className="modal-team">
+                <button className='close' onClick={() => setShowModal(false)}><FaTimes /></button>
+                <div className="search-group">
+                    <label>Pesquisar</label>
+                    <input type='text' value={searchTeam} onChange={(e) => setSearchTeam(e.target.value)} placeholder='Pesquise por uma equipa...'></input>
+                </div>
+                <div className="teams-list">
+                    {searchTeams.length > 0 ? (
+                        searchTeams.map((st) => (
+                            <div key={st.id} className="team-group">
+                                <img src={st.images.url} />
+                                <p>{st.name}</p>
+                                {handleButton(st.id)}
+                            </div>
+                        ))
+                    ) : 
+                        <p>Pesquise por uma equipa...</p>
+                    }
+                </div>
+            </div>
+        </div>
+    );
+}
+
+
 
 export default LeagueDetail

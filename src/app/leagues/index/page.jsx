@@ -13,10 +13,11 @@ import { useLeagues } from "@/context/leaguesContext";
 
 const Leagues = () => {
 
-    const [paginatedLeagues, setPaginatedLeagues] = useState([]);
     const router = useRouter();
     const [search, setSearch] = useState('');
     const {leagues, setLeagues, loading} = useLeagues();
+    const [paginatedLeagues, setPaginatedLeagues] = useState([]);
+    const [filteredLeagues, setFilteredLeagues] = useState([]);
 
     useEffect(() => {
         document.title = 'Leagues';
@@ -24,7 +25,7 @@ const Leagues = () => {
 
     useEffect(() => {
         if (search === '') {
-            setPaginatedLeagues(leagues);
+            setFilteredLeagues(leagues);
         } else {
             const filteredLeagues = leagues.filter(l =>
                 l.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -33,9 +34,9 @@ const Leagues = () => {
                 l.type === 2 && search.toLowerCase() === 'internacional' ||
                 l.season.toLowerCase().includes(search.toLowerCase())
             )
-            setPaginatedLeagues(filteredLeagues);
+            setFilteredLeagues(filteredLeagues);
         }
-    }, [search]);
+    }, [search, leagues]);
 
     const handleDelete = async (leagueId) => {
         if (confirm('Tem a certeza que deseja eliminar esta liga?')) {
@@ -46,7 +47,6 @@ const Leagues = () => {
                 if (response.status === 200 && response.data.success === true) {
                     toast.success(response.data.message);
                     setLeagues(leagues.filter(league => league.id !== leagueId));
-                    setPaginatedLeagues(paginatedLeagues.filter(league => league.id !== leagueId));
                 } else if (response.data.success === false) {
                     toast.error(response.data.message);
                 } else if (response.status === 401) {
@@ -81,7 +81,7 @@ const Leagues = () => {
                         )
                 }
             </div>
-            <Pagination list={leagues} itemsPerPage={10} setPagination={setPaginatedLeagues} />
+            <Pagination list={filteredLeagues} itemsPerPage={10} setPagination={setPaginatedLeagues} />
             <FloatBtn  route={() => router.push('/leagues/create')}/>
         </div>
     );

@@ -15,6 +15,7 @@ const TeamsIndex = () => {
 
     const {teams, setTeams, loading} = useTeams();
     const [paginatedTeams, setPaginatedTeams] = useState([]);
+    const [filteredTeams, setFilteredTeams] = useState([]);
     const router = useRouter();
     const [search, setSearch] = useState('');
     const [selectedLeague, setSelectedLeague] = useState('');
@@ -25,7 +26,7 @@ const TeamsIndex = () => {
 
     useEffect(() => {
         if (search === '') {
-            setPaginatedTeams(teams);
+            setFilteredTeams(teams);
         } else {
             const filteredTeams = teams.filter(t =>
                 t.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -35,9 +36,9 @@ const TeamsIndex = () => {
                 t.stadium.toLowerCase().includes(search.toLowerCase()) ||
                 t.teams_leagues.some(tl => tl.leagues?.name?.toLowerCase().includes(search.toLowerCase()))
             )
-            setPaginatedTeams(filteredTeams);
+            setFilteredTeams(filteredTeams);
         }
-    }, [search]);
+    }, [search, teams]);
 
     const handleDelete = async (teamId) => {
         if (confirm('Tem a certeza que deseja eliminar esta equipa?')) {
@@ -48,7 +49,6 @@ const TeamsIndex = () => {
                 if (response.status === 200 && response.data.success === true) {
                     toast.success(response.data.message);
                     setTeams(teams.filter(team => team.id !== teamId));
-                    setPaginatedTeams(paginatedTeams.filter(team => team.id !== teamId));
                 } else if (response.data.success === false) {
                     toast.error(response.data.message);
                 } else if (response.status === 401) {
@@ -64,10 +64,10 @@ const TeamsIndex = () => {
 
     useEffect(()=>{
         if(selectedLeague === ''){
-            setPaginatedTeams(teams)
+            setFilteredTeams(teams)
         }else{
             const filtered = teams.filter(team => team.teams_leagues.some(tl => Number(tl.league_id) === Number(selectedLeague)))
-            setPaginatedTeams(filtered);
+            setFilteredTeams(filtered);
         }   
     }, [selectedLeague])
 
@@ -94,7 +94,7 @@ const TeamsIndex = () => {
                         )
                 }
             </div>
-            <Pagination list={teams} itemsPerPage={10} setPagination={setPaginatedTeams} />
+            <Pagination list={filteredTeams} itemsPerPage={10} setPagination={setPaginatedTeams} />
             <FloatBtn route={() => router.push('/teams/create')} />
         </div>
     );

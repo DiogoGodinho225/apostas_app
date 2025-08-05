@@ -1,0 +1,133 @@
+.team-details-container .goBackBtn{
+    position: fixed;
+    left: 1.5vw;
+}
+
+.team-details-container{
+    padding: 1.5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2vw;
+    position: relative;
+    padding-bottom: 5vw;
+}
+
+.team-details-container .team-details{
+    background-color: var(--view-background);
+    width: 55%;
+    padding: 1.5vw;
+    border-radius: 1.5vw;
+}
+
+.team-details-container .team-details h3, .team-leagues h3{
+    color: white;
+    width: 100%;
+    border-bottom: 1px solid white;
+    padding-bottom: 0.8vw;
+    font-size: 1.2vw
+}
+
+.team-details-container .team-details .details-container{
+    padding: 1.6vw;
+    display: flex;
+    justify-content: space-between;
+}
+
+.team-details-container .team-details .logo-zone{
+    width: 20vw;
+    height: 10vw;
+    position: relative;
+    object-fit: contain;
+    border-right: 1px solid white;
+}
+
+.team-details-container .team-details .logo-zone img{
+    width: 7vw;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.team-details-container .details-zone{
+    width: 25vw;
+    height: 10vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.team-details-container .details-zone p{
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    font-size: 0.8vw;
+}
+
+.team-details-container .details-zone span{
+    font-weight: bold;
+}
+
+.team-details-container .alert{
+    color: var(--view-background)!important;
+}
+
+.team-details-container .team-leagues{
+    width: 55%;
+    background-color: var(--view-background);
+    border-radius: 1.5vw;
+    padding: 1.5vw;
+}
+
+.team-details-container table{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.team-details-container tr{
+    width: 100%;
+    border-bottom: 1px solid white;
+}
+
+.team-details-container td{
+    padding: 1.5vw 1vw;
+}
+
+.team-details-container .team-league-details{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: 0.89vw;
+}
+
+.team-details-container .team-league-details img{
+    width: 3.5vw
+}
+
+
+.team-details-container .team-league-details button{
+    background-color: transparent;
+    padding: 0;
+    border: none;
+    color: var(--button-color);
+    font-size: 1.3vw;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.team-details-container .team-league-details button:hover{
+    transform: scale(1.1);
+}
+
+.team-details-container td.no-teams{
+    color: white;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+}

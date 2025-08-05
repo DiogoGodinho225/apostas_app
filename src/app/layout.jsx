@@ -8,6 +8,8 @@ import { Toaster } from 'react-hot-toast';
 import { firaSans } from '@/utils/fonts';
 import { LeaguesProvider } from '@/context/leaguesContext';
 import { TeamsProvider } from '@/context/teamsContext';
+import { BetsProvider } from '@/context/betsContext';
+import { UserProvider } from '@/context/userContext';
 
 export default function RootLayout({ children }) {
 
@@ -37,28 +39,32 @@ export default function RootLayout({ children }) {
   return (
     <html className={firaSans.className} lang="pt">
       <body>
-        <TeamsProvider>
-          <LeaguesProvider>
-            <SessionProvider>
-              <Toaster position="top-right"
-                toastOptions={{
-                  style: {
-                    fontSize: '0.9vw',
-                  }
-                }}
-              />
-              <header>
-                <NavBar />
-              </header>
+        <SessionProvider>
+          <UserProvider>
+            <BetsProvider>
+              <TeamsProvider>
+                <LeaguesProvider>
+                  <Toaster position="top-right"
+                    toastOptions={{
+                      style: {
+                        fontSize: '0.9vw',
+                      }
+                    }}
+                  />
+                  <header>
+                    <NavBar />
+                  </header>
 
-              <main className='principal-container'>{children}</main>
+                  <main className='principal-container'>{children}</main>
 
-              <footer>
-                <Footer />
-              </footer>
-            </SessionProvider>
-          </LeaguesProvider>
-        </TeamsProvider>
+                  <footer>
+                    <Footer />
+                  </footer>
+                </LeaguesProvider>
+              </TeamsProvider>
+            </BetsProvider>
+          </UserProvider>
+        </SessionProvider>
       </body>
     </html>
   );

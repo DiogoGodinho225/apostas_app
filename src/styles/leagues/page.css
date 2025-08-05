@@ -20,7 +20,7 @@
 
 .leagues-container .card-top{
     width: 100%;
-    background-color: rgb(54, 54, 54);
+    background-color: var(--view-background);
     border-top-left-radius: 0.8vw;
     border-top-right-radius: 0.8vw;
     height: 50%;

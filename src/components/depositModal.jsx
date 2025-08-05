@@ -72,7 +72,7 @@ const Input = ({ depositValue, setDepositValue }) => {
         <div className="input-group">
             <label>Insere o montante a depositar</label>
             <div className='input-container'>
-                <input type='number' value={depositValue} onChange={(e) => setDepositValue(e.target.value)}></input>
+                <input type='number' step='0.01' value={depositValue} onChange={(e) => setDepositValue(e.target.value)}></input>
                 <label className='euro-icon'><IoLogoEuro  /></label>
             </div>
         </div>

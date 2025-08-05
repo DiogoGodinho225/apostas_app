@@ -1,8 +1,10 @@
 import prisma from "@/lib/prisma" 
 
-export async function PUT(request) {
+export async function PUT(request, context) {
 
-    const { id, depositValue } = await request.json();
+     const params = await context.params;
+    const id = Number(params.id);
+    const { depositValue } = await request.json();
 
     const depositAmount = parseFloat(depositValue);
 

@@ -9,54 +9,35 @@ import { getUser } from '@/services/userApi';
 import { toast } from 'react-hot-toast';
 import { FaPlus } from 'react-icons/fa';
 import DepositModal from './depositModal';
+import { useUser } from '@/context/userContext';
 
 
 const Navbar = () => {
 
     const pathname = usePathname();
-    const { data: session, status } = useSession();
     const router = useRouter();
 
     const [url, setUrl] = useState(process.env.NEXT_PUBLIC_APP_URL + 'images/users/user.png');
     const [balance, setBalance] = useState(0);
     const [showModal, setShowModal] = useState(false);
-
-    const fetchUser = async () => {
-
-        try {
-            if (status === "loading") {
-                return null
-            }
-
-            let id = session.user.id;
-            const result = await getUser(id);
-
-            if (result.status === 401) {
-                return router.push('/auth?error=token_invalid');
-            } else {
-                setUrl(process.env.NEXT_PUBLIC_APP_URL + result.data.user.image.url);
-                setBalance(result.data.user.wallet.balance);
-            }
-
-        } catch (error) {
-            setUrl(process.env.NEXT_PUBLIC_APP_URL + 'images/users/user.png');
-        }
-    }
+    const { user, fetchUser } = useUser()
 
     useEffect(() => {
-        if (status === "authenticated") {
-            fetchUser();
+        if (user) {
+            setUrl(process.env.NEXT_PUBLIC_APP_URL + user.image.url);
+            setBalance(user.wallet.balance);
+        } else {
+            setUrl(process.env.NEXT_PUBLIC_APP_URL + 'images/users/user.png');
         }
-
-    }, [session, status, router]);
+    }, [user])
 
     return (
         <>
             <nav className={firaSans.className}>
                 <ul>
                     <NavLink active={pathname.startsWith('/dashboard') ? 'active' : ''} route={'/dashboard'} name={'Dashboard'} />
-                    <NavLink active={pathname.startsWith('/bets') ? 'active' : ''} route={'/bets'} name={'Apostas'} />
-                    <NavLink active={pathname.startsWith('/leagues')  ? 'active' : ''} route={'/leagues/index'} name={'Ligas'} />
+                    <NavLink active={pathname.startsWith('/bets') ? 'active' : ''} route={'/bets/index'} name={'Apostas'} />
+                    <NavLink active={pathname.startsWith('/leagues') ? 'active' : ''} route={'/leagues/index'} name={'Ligas'} />
                     <NavLink active={pathname.startsWith('/teams') ? 'active' : ''} route={'/teams/index'} name={'Equipas'} />
                 </ul>
                 <Balance balance={balance} setShowModal={setShowModal} />

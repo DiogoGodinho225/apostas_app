@@ -130,6 +130,11 @@
     width: 3.5vw
 }
 
+.league-details-container .league-team-details .btnGroup{
+    display: flex;
+    gap: 1vw;
+}
+
 .league-details-container .league-team-details button{
     background-color: transparent;
     padding: 0;
@@ -138,10 +143,133 @@
     font-size: 1.3vw;
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.league-details-container .league-team-details button:nth-of-type(2){
+    color: var(--primary-color );
 }
 
 .league-details-container .league-team-details button:hover{
     transform: scale(1.1);
+}
+
+.league-details-container td.no-teams{
+    color: white;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+}
+
+.league-details-container .overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0; 
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+}
+
+.league-details-container .modal-team{
+    background-color: var(--view-background);
+    z-index: 1000;
+    padding: 1vw;
+    width: 30%;
+    border-radius: 0.8vw;
+}
+
+.league-details-container .modal-team button.close{
+    float: right;
+    background: none;
+    border: none;
+    color: var(--secondary-color);
+    cursor: pointer;
+    font-size: 0.9vw;
+}
+
+.league-details-container .search-group{
+    margin-top: 2.3vw;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vw;
+}
+
+.league-details-container .search-group label{
+    color: white;
+    font-size: 0.8vw;
+}
+
+.league-details-container .search-group input{
+    border: none;
+    height: 1.8vw;
+    padding: 0.5vw;
+    font-size: 0.8vw;
+    border-radius: 0.5vw;
+    outline: none;
+}
+
+.league-details-container .teams-list{
+    height: 20vw;
+    max-height: 20vw;
+    overflow: auto;
+    padding-top: 1vw;
+}
+
+.league-details-container .teams-list p{
+    color: white;
+    width: 100%;
+    text-align: center;
+    font-size: 0.8vw;
+}
+
+.league-details-container .team-group{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5vw;
+    border-bottom: 1px solid black;
+}
+
+.league-details-container .team-group p{
+    font-size: 0.8vw;
+}
+
+.league-details-container .team-group button.btnCheck{
+    color: green;
+    background-color: transparent;
+    border: none;
+    font-size: 0.9vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.league-details-container .team-group button.btnAdd{
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    color: var(--button-color);
+    font-size: 0.9vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.league-details-container .team-group button.btnAdd:hover{
+    opacity: 90%;
+}
+
+.league-details-container .team-group img{
+    width: 6%;
 }
 
 

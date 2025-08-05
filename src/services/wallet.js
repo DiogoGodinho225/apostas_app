@@ -3,8 +3,7 @@ import axios from "axios";
 export const deposit = async (id, depositValue) =>{
 
     try{
-        const result = await axios.put('/api/wallet/deposit', {
-            id: id,
+        const result = await axios.put(` /api/wallet/${id}`, {
             depositValue: depositValue,
         })
 

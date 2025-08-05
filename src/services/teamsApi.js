@@ -3,7 +3,7 @@ import axios from "axios";
 export const createTeam = async (formData) =>{
     try {
 
-        const response = await axios.post('/api/teams/create', formData);
+        const response = await axios.post('/api/teams', formData);
 
         return response;
         
@@ -17,7 +17,7 @@ export const createTeam = async (formData) =>{
 export const getTeams = async () => {
 
     try {
-        const response = await axios.get('/api/teams/getTeams');
+        const response = await axios.get('/api/teams');
 
         return response;
     } catch (error) {
@@ -30,7 +30,7 @@ export const getTeams = async () => {
 
 export const deleteTeam = async (teamId) => {
     try {
-        const response = await axios.delete(`/api/teams/delete?id=${teamId}`);
+        const response = await axios.delete(`/api/teams/${teamId}`);
 
         return response;
     } catch (error) {
@@ -42,7 +42,7 @@ export const deleteTeam = async (teamId) => {
 
 export const getTeam = async (teamId) => {
     try {
-        const response = await axios.get(`/api/teams/getTeam?id=${teamId}`);
+        const response = await axios.get(`/api/teams/${teamId}`);
 
         return response;
     } catch (error) {
@@ -54,7 +54,7 @@ export const getTeam = async (teamId) => {
 
 export const updateTeam = async (formData) => {
     try {
-        const response = await axios.put(`/api/teams/update`, formData);
+        const response = await axios.put(`/api/teams`, formData);
 
         return response;
     } catch (error) {

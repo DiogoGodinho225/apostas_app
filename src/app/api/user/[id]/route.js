@@ -1,9 +1,9 @@
 import prisma from "@/lib/prisma";
 
-export async function GET(request) {
+export async function GET(request, context) {
 
-    const url = new URL(request.url);
-    const id = url.searchParams.get('id');
+     const params = await context.params;
+    const id = params.id;
 
     if (!id) {
         return new Response(JSON.stringify({ success: false, message: 'Dados não recebidos!' }), {
