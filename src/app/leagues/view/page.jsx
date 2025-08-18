@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { AddTeam, DeleteTeam, getLeague } from '@/services/leaguesApi';
 import toast, { ToastBar } from 'react-hot-toast';
@@ -10,13 +10,8 @@ import { useTeams } from '@/context/teamsContext';
 
 const LeagueDetail = () => {
 
-    const searchParams = useSearchParams();
-    const router = useRouter();
-    const [league, setLeague] = useState(null);
-    const [loading, setLoading] = useState(false);
-
     useEffect(() => {
-    
+
         document.title = 'League Details';
 
         const oldBg = document.body.style.backgroundColor;
@@ -25,7 +20,24 @@ const LeagueDetail = () => {
         return () => {
             document.body.style.backgroundColor = oldBg;
         };
-    }, [league]);
+    }, []);
+
+
+
+    return (
+        <Suspense>
+            <View />
+        </Suspense>
+    );
+
+}
+
+const View = () => {
+
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const [league, setLeague] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const fetchLeague = async () => {
 
@@ -62,7 +74,6 @@ const LeagueDetail = () => {
     }, []);
 
     return (
-
         <div className="league-details-container">
             <BackButton />
             {!league ? (
@@ -70,7 +81,7 @@ const LeagueDetail = () => {
             ) :
                 <>
                     <Details league={league} />
-                    <LeagueTeams teams={league.teams_leagues.map(tl => tl.teams)} leagueType={league.type} leagueId={league.id} fetchLeague={fetchLeague}/>
+                    <LeagueTeams teams={league.teams_leagues.map(tl => tl.teams)} leagueType={league.type} leagueId={league.id} fetchLeague={fetchLeague} />
                 </>
 
             }
@@ -105,21 +116,21 @@ const LeagueTeams = ({ teams, leagueType, leagueId, fetchLeague }) => {
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const handleRemoveTeam = async(teamId) =>{
+    const handleRemoveTeam = async (teamId) => {
         setLoading(true);
 
         try {
             const response = await DeleteTeam(teamId, leagueId);
 
-            if(response.status === 200 && response.data.success === true){
+            if (response.status === 200 && response.data.success === true) {
                 toast.success(response.data.message);
                 fetchLeague();
-            }else if(response.data.success === false){
+            } else if (response.data.success === false) {
                 toast.error(response.data.message);
-            }else if(response.status === 401){
+            } else if (response.status === 401) {
                 router.push('/auth?error=token_invalid');
             }
-            
+
         } catch (error) {
             console.log(error);
         }
@@ -165,7 +176,7 @@ const LeagueTeams = ({ teams, leagueType, leagueId, fetchLeague }) => {
                 </tbody>
             </table>
             {
-                showModal === true ? (<ModalTeam setShowModal={setShowModal} leagueId={leagueId} fetchLeague={fetchLeague} leagueTeams={teams}/>) : null
+                showModal === true ? (<ModalTeam setShowModal={setShowModal} leagueId={leagueId} fetchLeague={fetchLeague} leagueTeams={teams} />) : null
             }
         </div>
     );
@@ -219,14 +230,14 @@ const ModalTeam = ({ setShowModal, leagueId, fetchLeague, leagueTeams }) => {
         setLoading(false)
     }
 
-    const handleButton = (teamId) =>{
+    const handleButton = (teamId) => {
         const filtered = leagueTeams.filter(t => t.id === teamId);
 
-        if(filtered.length > 0){
+        if (filtered.length > 0) {
             return <button className='btnCheck' disabled ><FaCheck /></button>
         }
 
-        return <button  className='btnAdd' disabled={loading} onClick={() => handleAddTeam(teamId)}><FaPlus /></button>
+        return <button className='btnAdd' disabled={loading} onClick={() => handleAddTeam(teamId)}><FaPlus /></button>
     }
 
     return (
@@ -246,7 +257,7 @@ const ModalTeam = ({ setShowModal, leagueId, fetchLeague, leagueTeams }) => {
                                 {handleButton(st.id)}
                             </div>
                         ))
-                    ) : 
+                    ) :
                         <p>Pesquise por uma equipa...</p>
                     }
                 </div>

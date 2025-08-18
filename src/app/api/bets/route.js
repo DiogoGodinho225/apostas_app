@@ -20,27 +20,33 @@ export async function POST(request) {
         return new Response(JSON.stringify({success: false, message: 'Carteira não encontrada!'}), {status: 200});
     }
 
+    const balance = wallet.balance - (bet.stake * wallet.stake);
+
+    if(balance < 0){
+        return new Response(JSON.stringify({success: false, message: 'Montante disponível insuficiente!'}), {status: 200});
+    }
+
     await prisma.$transaction(async (transaction) => {
 
         const newBet = await transaction.bet.create({
             data: {
                 user: {
                     connect: {
-                        id: bet.userId,
+                        id: Number(bet.userId),
                     }
                 },
-                bet_type: bet.betType,
-                stake: bet.stake,
-                odds: bet.betOdd,
-                result: bet.result,
-                profit: bet.profit,
+                bet_type: Number(bet.betType),
+                stake: Number(bet.stake),
+                odds: parseFloat(bet.betOdd),
+                result: 'Pendente',
+                profit: 0,
                 bet_lines: {
                     create: bet.betLines.map(betLine => ({
-                        leagues: { connect: { id: betLine.leagueId } },
-                        match: betLine.match,
+                        leagues: { connect: { id: Number(betLine.leagueId) } },
+                        match: betLine.home + ' x ' + betLine.away,
                         prediction: betLine.prediction,
-                        odd: betLine.odd,
-                        status: betLine.status,
+                        odd: parseFloat(betLine.odd),
+                        status: 1,
                     })),
                 }
             }
@@ -48,7 +54,7 @@ export async function POST(request) {
 
         if(newBet){
             await transaction.wallet.update({
-                where: {user_id: newBet.user_id},
+                where: {user_id: Number(newBet.user_id)},
                 data: {
                     balance: wallet.balance - (newBet.stake * wallet.stake)
                 }
@@ -59,7 +65,7 @@ export async function POST(request) {
             data: {
                 user: {
                     connect: {
-                        id: bet.userId,
+                        id: Number(bet.userId),
                     }
                 },
                 transaction_type: {
@@ -68,7 +74,7 @@ export async function POST(request) {
                     }
                 },
                 amount: bet.stake * wallet.stake,
-                balance: wallet.balance - (bet.stake * wallet.stake)
+                balance: balance,
             }
         })
     })

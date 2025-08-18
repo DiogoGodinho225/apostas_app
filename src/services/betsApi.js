@@ -14,7 +14,7 @@ export const getUserBets = async(userId) =>{
 
 export const makeBet = async(bet) =>{
     try {
-        const response = await axios.post('/api/bets', bet);
+        const response = await axios.post('/api/bets', {bet: bet});
 
         return response;
     } catch (error) {

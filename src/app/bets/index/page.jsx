@@ -28,22 +28,28 @@ const Bets = () => {
         document.title = 'Bets';
     }, [])
 
+    const updateBets = (updatedBet) => {
+        setFilteredBets(prev => prev.map(b => (b.id === updatedBet.id ? updatedBet : b)));
+    }
+
+
     return (
         <div className="bets-container">
             <BetFilters bets={bets} setFilteredBets={setFilteredBets} />
-            <BetsList paginatedBets={paginatedBets} loading={loading} />
+            <BetsList paginatedBets={paginatedBets} loading={loading} updateBets={updateBets} />
             <Pagination list={filteredBets} itemsPerPage={15} setPagination={setPaginatedBets} />
             <FloatBtn route={() => router.push('/bets/create')} />
         </div>
     );
 }
 
-const BetsList = ({ paginatedBets, loading }) => {
+const BetsList = ({ paginatedBets, loading, updateBets }) => {
 
-    const { user } = useUser();
+    const { user, setUser } = useUser();
     const [showBetView, setShowBetView] = useState(false);
     const [bet, setBet] = useState(null);
     const [selectedBet, setSelectedBet] = useState(null);
+    const router = useRouter();
 
     const betTotalValue = (betStake, betOdd) => {
 
@@ -66,21 +72,26 @@ const BetsList = ({ paginatedBets, loading }) => {
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         handleShowBet();
     }, [selectedBet]);
 
-    useEffect(()=>{
-        if(selectedBet && showBetView === true){
+    useEffect(() => {
+        if (selectedBet && showBetView === true) {
             setBet(paginatedBets.find(b => b.id === selectedBet));
-        }   
+        }
     }, [paginatedBets])
+
+    const handleUpdateBet = (updatedBet) => {
+        updateBets(updatedBet);
+        setBet(updatedBet);
+    };
 
     return (
         <>
             <div className="bets-list">
                 {
-                    loading ? (
+                    loading && paginatedBets.length === 0 ? (
                         <p className="alert">A carregar...</p>
                     ) : paginatedBets.length === 0 ? (
                         <p className="alert">Nenhuma aposta encontrada...</p>
@@ -91,6 +102,7 @@ const BetsList = ({ paginatedBets, loading }) => {
                                     <th>Data</th>
                                     <th>Tipo</th>
                                     <th>Stake</th>
+                                    <th>Valor Apostado</th>
                                     <th>Odd Total</th>
                                     <th>Valor Total</th>
                                     <th>Resultado</th>
@@ -105,13 +117,14 @@ const BetsList = ({ paginatedBets, loading }) => {
                                             <td>{new Date(b.created_at).toLocaleDateString('PT-pt')}</td>
                                             <td>{b.bet_type === 1 ? 'Simples' : 'Múltipla'}</td>
                                             <td>{b.stake}</td>
+                                            <td>{b.stake * user.wallet.stake}</td>
                                             <td>{b.odds}</td>
                                             <td>{betTotalValue(b.stake, b.odds)} €</td>
                                             <td>{b.result}</td>
-                                            <td>{b.profit} €</td>
+                                            <td style={{ fontWeight: 'bold', color: b.profit > 0 ? 'green' : b.profit < 0 ? 'red' : '' }}>{b.profit} €</td>
                                             <td className="action-btns">
                                                 <button onClick={() => setSelectedBet(b.id)}><FaEye /></button>
-                                                <button><FaPencilAlt /></button>
+                                                <button onClick={() => router.push(`/bets/update?id=${b.id}`)}><FaPencilAlt /></button>
                                             </td>
                                         </tr>
                                     ))
@@ -121,7 +134,7 @@ const BetsList = ({ paginatedBets, loading }) => {
                 }
             </div>
             {
-                showBetView ? (<BetView bet={bet} handleShowBet={handleShowBet} />) : null
+                showBetView ? (<BetView bet={bet} handleShowBet={handleShowBet} handleUpdateBet={handleUpdateBet} stakeValue={user.wallet.stake} setUser={setUser} />) : null
             }
 
 
@@ -148,7 +161,7 @@ const BetFilters = ({ bets, setFilteredBets }) => {
         var filtered = [...bets];
 
         if (status && status !== 'Todas') {
-            filtered = filtered.filter(b => b?.status?.toLowerCase() === status.toLowerCase());
+            filtered = filtered.filter(b => b?.result?.toLowerCase() === status.toLowerCase());
         }
 
         if (league) {
@@ -286,19 +299,22 @@ const FilterGroup = ({ label, type, name, value, placeholder, handleFilterChange
 
 }
 
-const BetView = ({ bet, handleShowBet }) => {
+const BetView = ({ bet, handleShowBet, handleUpdateBet, stakeValue, setUser }) => {
 
     const handleLabelStatus = (result) => {
 
-        if (result === 'Pendente') {
-            return <p className="bet-status" style={{ backgroundColor: 'rgb(230, 213, 117)', color: 'rgb(189, 160, 0)' }}>{result}</p>
-        } else if (result === 'Ganha') {
-            return <p className="bet-status" style={{ backgroundColor: 'rgb(128, 220, 128)', color: 'green' }}>{result}</p>
-        } else if (result === 'Perdida') {
-            return <p className="bet-status" style={{ backgroundColor: 'rgb(248, 129, 129)', color: 'red' }}>{result}</p>
-        } else if (result === 'Devolvida') {
-            return <p className="bet-status" style={{ backgroundColor: 'gray', color: 'rgb(36, 36, 36)' }}>{result}</p>
+        const colors = {
+            'Pendente': { backgroundColor: 'rgb(230, 213, 117)', color: 'rgb(189, 160, 0)' },
+            'Ganha': { backgroundColor: 'rgb(128, 220, 128)', color: 'green' },
+            'Perdida': { backgroundColor: 'rgb(248, 129, 129)', color: 'red' },
+            'Devolvida': { backgroundColor: 'gray', color: 'rgb(36, 36, 36)' },
         }
+
+
+        const color = colors[result];
+
+        return <p className="bet-status" style={{ backgroundColor: color.backgroundColor, color: color.color }}>{result}</p>
+
     }
 
     return (
@@ -330,7 +346,7 @@ const BetView = ({ bet, handleShowBet }) => {
                         <div className="bet-lines">
                             {
                                 bet.bet_lines.map((bl) => (
-                                    <BetLineDetails key={bl.id} betLine={bl} />
+                                    <BetLineDetails key={bl.id} betLine={bl} bet={bet} handleUpdateBet={handleUpdateBet} handleLabelStatus={handleLabelStatus} stakeValue={stakeValue} setUser={setUser} />
                                 ))
                             }
                         </div>
@@ -342,9 +358,8 @@ const BetView = ({ bet, handleShowBet }) => {
 
 }
 
-const BetLineDetails = ({ betLine }) => {
+const BetLineDetails = ({ betLine, handleUpdateBet, bet, handleLabelStatus, stakeValue, setUser }) => {
 
-    const { fetchBets } = useBets();
     const router = useRouter();
     const [status, setStatus] = useState(betLine.status);
 
@@ -354,28 +369,70 @@ const BetLineDetails = ({ betLine }) => {
 
 
     const handleRowTop = (prediction, odd, result) => {
-        if (result === 1) {
-            return <div className="row-top">
-                <p>{prediction}</p>
-                <p>{odd}</p>
-            </div>
 
-        } else if (result === 2) {
-            return (<div className="row-top">
-                <p style={{ color: 'green' }}>{prediction}</p>
-                <p style={{ color: 'green' }}>{odd}</p>
-            </div>)
-        } else if (result === 3) {
-            return (<div className="row-top">
-                <p style={{ color: 'red' }}>{prediction}</p>
-                <p style={{ color: 'red' }}>{odd}</p>
-            </div>)
-        } else if (result === 4) {
-            return (<div className="row-top">
-                <p style={{ color: 'rgb(36, 36, 36)' }}>{prediction}</p>
-                <p style={{ color: 'rgb(36, 36, 36)' }}>{odd}</p>
-            </div>)
+        const colors = {
+            'Pendente': '',
+            'Ganha': 'green',
+            'Perdida': 'red',
+            'Devolvida': 'rgb(36, 36, 36)'
         }
+
+        const color = colors[result] || '';
+
+        return (<div className="row-top">
+            <p style={{ color: color }}>{prediction}</p>
+            <p style={{ color: color }}>{odd}</p>
+        </div>)
+
+    }
+
+    const calculatebetResult = (updatedBetLines) => {
+        const betWin =
+            updatedBetLines.every(bl => bl.status === 2 || bl.status === 4) &&
+            updatedBetLines
+            .some(bl => bl.status === 2);
+
+        const betLose = updatedBetLines.some(bl => bl.status === 3);
+        const returnedBets = updatedBetLines.filter(bl => bl.status === 4);
+
+        if (betWin) {
+            return 'Ganha';
+        } else if (betLose) {
+            return 'Perdida'
+        } else if (returnedBets.length > 0) {
+            if (returnedBets.length > 1) {
+
+                var newOdd = bet.odds
+
+                returnedBets.forEach(bl => {
+                    newOdd /= bl.odd
+                });
+
+                const updatedBet = {
+                    ...bet,
+                    odds: newOdd
+                };
+
+                handleUpdateBet(updatedBet);
+            }
+
+            return 'Devolvida'
+        }
+
+        return 'Pendente';
+    }
+
+    const calculateBetProfit = (stake, odd, result) => {
+
+        var profit = 0;
+
+        if (result === 'Ganha') {
+            profit = stake * odd - stake;
+        } else if (result === 'Perdida') {
+            profit = -stake
+        }
+
+        return profit;
     }
 
     const handleBetStatus = async (betId, betLineId, newStatus) => {
@@ -383,8 +440,42 @@ const BetLineDetails = ({ betLine }) => {
             const response = await betStatus(betId, betLineId, newStatus)
 
             if (response.status === 200 && response.data.success === true) {
-                fetchBets();
                 setStatus(newStatus);
+
+                const newBetLines = bet.bet_lines.map(line =>
+                    line.id === betLineId ? { ...line, status: newStatus } : line
+                );
+
+                const result = calculatebetResult(newBetLines);
+                const stake = bet.stake * stakeValue;
+                const odd = bet.odds;
+
+                const profit = calculateBetProfit(stake, odd, result,)
+
+                const updatedBet = {
+                    ...bet,
+                    bet_lines: newBetLines,
+                    result: result,
+                    profit: profit
+                };
+
+                handleUpdateBet(updatedBet);
+                handleLabelStatus(updatedBet.result);
+
+                setUser(prev => ({
+                    ...prev,
+                    wallet: {
+                        ...prev.wallet,
+                        balance:
+                            updatedBet.result === 'Ganha'
+                                ? prev.wallet.balance + ((updatedBet.stake * stakeValue) * updatedBet.odds)
+                                : updatedBet.result === 'Devolvida'
+                                    ? prev.wallet.balance + (updatedBet.stake * stakeValue)
+                                    : prev.wallet.balance
+                    }
+                }))
+
+
             } else if (response.data.success === false) {
                 toast.error(response.data.message);
             } else if (response.status === 401) {
@@ -405,7 +496,7 @@ const BetLineDetails = ({ betLine }) => {
                 <p>{betLine.match}</p>
                 {
                     status === 1 ? (
-                        <select onChange={(e) => handleBetStatus(betLine.bet_id, betLine.id, Number(e.target.value))} value={status}>
+                        <select onChange={(e) => { handleBetStatus(betLine.bet_id, betLine.id, Number(e.target.value)) }} value={status}>
                             <option value={1}>Pendente</option>
                             <option value={2}>Ganha</option>
                             <option value={3}>Perdida</option>

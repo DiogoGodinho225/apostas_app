@@ -1,17 +1,13 @@
 'use client'
 import { getTeam } from "@/services/teamsApi";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import BackButton from "@/components/goBackButton";
 import '@/styles/teams/view.css';
 import { FaFolder } from "react-icons/fa";
 
 const TeamDetail = () => {
-
-    const searchParams = useSearchParams();
-    const [team, setTeam] = useState(null);
-    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
 
@@ -26,6 +22,20 @@ const TeamDetail = () => {
         }
 
     }, []);
+
+
+    return (
+        <Suspense>
+            <View />
+        </Suspense>
+    );
+}
+
+const View = () => {
+
+    const searchParams = useSearchParams();
+    const [team, setTeam] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const fetchTeam = async () => {
 

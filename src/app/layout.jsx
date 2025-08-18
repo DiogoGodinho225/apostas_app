@@ -10,6 +10,7 @@ import { LeaguesProvider } from '@/context/leaguesContext';
 import { TeamsProvider } from '@/context/teamsContext';
 import { BetsProvider } from '@/context/betsContext';
 import { UserProvider } from '@/context/userContext';
+import { StatisticsProvider } from '@/context/statisticsContext';
 
 export default function RootLayout({ children }) {
 
@@ -42,26 +43,28 @@ export default function RootLayout({ children }) {
         <SessionProvider>
           <UserProvider>
             <BetsProvider>
-              <TeamsProvider>
-                <LeaguesProvider>
-                  <Toaster position="top-right"
-                    toastOptions={{
-                      style: {
-                        fontSize: '0.9vw',
-                      }
-                    }}
-                  />
-                  <header>
-                    <NavBar />
-                  </header>
+              <StatisticsProvider>
+                <TeamsProvider>
+                  <LeaguesProvider>
+                    <Toaster position="top-right"
+                      toastOptions={{
+                        style: {
+                          fontSize: '0.9vw',
+                        }
+                      }}
+                    />
+                    <header>
+                      <NavBar />
+                    </header>
 
-                  <main className='principal-container'>{children}</main>
+                    <main className='principal-container'>{children}</main>
 
-                  <footer>
-                    <Footer />
-                  </footer>
-                </LeaguesProvider>
-              </TeamsProvider>
+                    <footer>
+                      <Footer />
+                    </footer>
+                  </LeaguesProvider>
+                </TeamsProvider>
+              </StatisticsProvider>
             </BetsProvider>
           </UserProvider>
         </SessionProvider>

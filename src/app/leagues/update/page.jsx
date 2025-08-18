@@ -1,6 +1,6 @@
 'use client'
 import '@/styles/leagues/update.css'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { getLeague, updateLeague } from '@/services/leaguesApi'
 import { useRouter, useSearchParams } from 'next/navigation'
 import toast from 'react-hot-toast'
@@ -8,9 +8,11 @@ import { useLeagues } from '@/context/leaguesContext'
 
 const UpdateLeague = () => {
     return (
-        <div className="update-league-container">
+        <Suspense>
+             <div className="update-league-container">
             <Form />
         </div>
+        </Suspense>
     )
 }
 

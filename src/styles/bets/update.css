@@ -1,0 +1,135 @@
+.update-bet-container form {
+    background-color: var(--view-background);
+    width: 50%;
+    padding: 2vw;
+    border-radius: 0.5vw;
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+    color: white;
+}
+
+.update-bet-container {
+    padding: 1.5vw;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 5vw;
+}
+
+.update-bet-container h3 {
+    color: white;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    font-size: 1.1vw;
+}
+
+.update-bet-container .row {
+    width: 100%;
+    display: flex;
+    gap: 6vw;
+    position: relative;
+}
+
+.update-bet-container .form-group {
+    width: 50% !important;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vw;
+}
+
+.match-group {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 1vw;
+}
+
+.match-group span {
+    font-size: 0.8vw;
+}
+
+.match-group select {
+    width: 100%;
+}
+
+.betLine {
+    border: 1px solid white;
+    padding: 1vw;
+    border-radius: 0.5vw;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+}
+
+.closeBetLine {
+    position: absolute;
+    top: 0.5vw;
+    right: 0.5vw;
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 0.8vw;
+}
+
+.bet-info {
+    display: flex;
+    width: 50%;
+    max-width: 50%;
+    justify-content: center;
+    gap: 20%;
+}
+
+.bet-info .info-group {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vw;
+}
+
+.addBetLine {
+    background-color: var(--button-color);
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 0.7vw;
+    padding: 0.2vw;
+    border-radius: 0.5vw;
+    cursor: pointer;
+}
+
+.addBetLine:hover {
+    opacity: 90%;
+}
+
+.update-bet-container form input,
+.update-bet-container form select {
+    outline: none;
+    border-radius: 0.5vw;
+    border: none;
+    padding: 0.3vw;
+    font-size: 0.8vw;
+}
+
+.update-bet-container label {
+    font-size: 0.7vw;
+}
+
+.update-bet-container button[type="submit"] {
+    position: absolute;
+    right: 0;
+    padding: 0.2vw 1vw;
+    font-size: 0.8vw;
+    font-weight: bold;
+    border: none;
+    border-radius: 0.5vw;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.update-bet-container button[type="submit"]:hover {
+    cursor: pointer;
+    opacity: 70%;
+}

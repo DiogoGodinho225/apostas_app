@@ -115,6 +115,13 @@
    border-radius: 1vw;
 }
 
+.bets-container tbody{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1vw;
+}
+
 .bets-container td, .bets-container th{
     width: 100%;
     display: flex;

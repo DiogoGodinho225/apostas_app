@@ -1,17 +1,20 @@
 'use client'
 import '@/styles/teams/update.css'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { getTeam, updateTeam } from '@/services/teamsApi'
 import { useRouter, useSearchParams } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { useTeams } from '@/context/teamsContext'
 import { useLeagues } from '@/context/leaguesContext'
+import BackButton from '@/components/goBackButton'
 
 const UpdateTeam = () => {
     return (
-        <div className="update-team-container">
-            <Form />
-        </div>
+        <Suspense>
+            <div className="update-team-container">
+                <Form />
+            </div>
+        </Suspense>
     )
 }
 
@@ -105,12 +108,12 @@ const Form = () => {
 
     }
 
-    useEffect(()=>{
-        if(!team || !leagues) return;
+    useEffect(() => {
+        if (!team || !leagues) return;
 
-        if(team.country === ''){
+        if (team.country === '') {
             setCountryLeagues(leagues);
-        }else{
+        } else {
             const filtered = leagues.filter(l => l.country.toLowerCase() === team.country.toLowerCase);
             setCountryLeagues(filtered);
         }
@@ -144,7 +147,7 @@ const Form = () => {
                     </div>
                     <div className='row'>
                         <FormGroup type={'text'} txtname={'founded_year'} placeholder={'Fundado em...'} label={'Fundado em: '} action={handleInputChange} value={team.founded_year} />
-                        <FormGroup type={'file'} txtname={'image'} placeholder={null} label={'Imagem: '} action={handleInputChange}/>
+                        <FormGroup type={'file'} txtname={'image'} placeholder={null} label={'Imagem: '} action={handleInputChange} />
                     </div>
                     <div className='row'>
                         <FormGroup type={'select'} txtname={'leagueId'} placeholder={'Selecione a Liga'} label={'Liga: '} action={handleLeagueChange} value={team.leagueId} countryLeagues={countryLeagues} />
