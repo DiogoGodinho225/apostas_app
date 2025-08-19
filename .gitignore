@@ -30,7 +30,6 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-
 # vercel
 .vercel
 
@@ -38,3 +37,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+/src/generated/prisma
