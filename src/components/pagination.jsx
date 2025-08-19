@@ -10,8 +10,11 @@ const Pagination = ({ list, itemsPerPage, setPagination }) => {
 
     useEffect(() => {
         setPagination(list.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage));
-        setCurrentPage(1);
     }, [currentPage, list, itemsPerPage]);
+
+    useEffect(() =>{
+        setCurrentPage(1);
+    }, [list])
 
     return (
         (totalPages === 1 || totalPages === 0) ? null : (

@@ -10,6 +10,7 @@ export const StatisticsProvider = ({ children }) => {
     const { user } = useUser();
     const { bets } = useBets();
     const balance = user?.wallet?.balance || 0;
+    const stake = user?.wallet?.stake || 0;
     const totalBets = bets ? bets.length : 0;
 
     const profit = useMemo(() => {
@@ -39,6 +40,7 @@ export const StatisticsProvider = ({ children }) => {
 
 
             ROI = (profit / TotalBeted) * 100;
+            ROI = parseFloat(ROI.toFixed(1));
 
         } else {
             return 0;
@@ -50,7 +52,9 @@ export const StatisticsProvider = ({ children }) => {
     const winTax = useMemo(()=>{
         if(bets){
             const totalBetsWin = bets.filter(b => b.result === 'Ganha');
-            const tax = (totalBetsWin.length / totalBets) * 100;
+            let tax = (totalBetsWin.length / totalBets) * 100;
+
+            tax = parseFloat(tax.toFixed(1))
 
             return tax;
             
@@ -60,7 +64,7 @@ export const StatisticsProvider = ({ children }) => {
     }, [bets, user])
 
     return (
-        <StatisticsContext.Provider value={{ balance, profit, ROI, winTax, totalBets }}>{children}</StatisticsContext.Provider>
+        <StatisticsContext.Provider value={{ balance, profit, ROI, winTax, totalBets, stake }}>{children}</StatisticsContext.Provider>
     );
 
 }

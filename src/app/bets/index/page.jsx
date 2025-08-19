@@ -35,9 +35,12 @@ const Bets = () => {
 
     return (
         <div className="bets-container">
+            <div className="page-top">
+                <h2 className="page-title">Apostas</h2>
+            </div>
             <BetFilters bets={bets} setFilteredBets={setFilteredBets} />
             <BetsList paginatedBets={paginatedBets} loading={loading} updateBets={updateBets} />
-            <Pagination list={filteredBets} itemsPerPage={15} setPagination={setPaginatedBets} />
+            <Pagination list={filteredBets} itemsPerPage={6} setPagination={setPaginatedBets} />
             <FloatBtn route={() => router.push('/bets/create')} />
         </div>
     );
@@ -390,7 +393,7 @@ const BetLineDetails = ({ betLine, handleUpdateBet, bet, handleLabelStatus, stak
         const betWin =
             updatedBetLines.every(bl => bl.status === 2 || bl.status === 4) &&
             updatedBetLines
-            .some(bl => bl.status === 2);
+                .some(bl => bl.status === 2);
 
         const betLose = updatedBetLines.some(bl => bl.status === 3);
         const returnedBets = updatedBetLines.filter(bl => bl.status === 4);
