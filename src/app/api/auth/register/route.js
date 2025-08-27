@@ -42,6 +42,7 @@ export async function POST(request) {
                         id: 1,
                     }
                 },
+                last_login: new Date(),
             },
         });
 
