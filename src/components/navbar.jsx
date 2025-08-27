@@ -17,17 +17,17 @@ const Navbar = () => {
     const pathname = usePathname();
     const router = useRouter();
 
-    const [url, setUrl] = useState(process.env.NEXT_PUBLIC_APP_URL + 'images/users/user.png');
+    const [url, setUrl] = useState(process.env.NEXT_PUBLIC_APP_URL + '/api/uploads/users/user.png');
     const [balance, setBalance] = useState(0);
     const [showModal, setShowModal] = useState(false);
-    const { user, fetchUser } = useUser()
+    const { user } = useUser()
 
     useEffect(() => {
         if (user) {
             setUrl(process.env.NEXT_PUBLIC_APP_URL + user.image.url);
             setBalance(user.wallet.balance);
         } else {
-            setUrl(process.env.NEXT_PUBLIC_APP_URL + 'images/users/user.png');
+            setUrl(process.env.NEXT_PUBLIC_APP_URL + '/api/uploads/users/user.png');
         }
     }, [user])
 
@@ -43,7 +43,7 @@ const Navbar = () => {
                 <Balance balance={balance} setShowModal={setShowModal} />
                 <Profile url={url} />
             </nav>
-            {showModal ? (<DepositModal setShowModal={setShowModal} fetchUser={fetchUser} />) : null}
+            {showModal ? (<DepositModal setShowModal={setShowModal}  />) : null}
         </>
 
     );

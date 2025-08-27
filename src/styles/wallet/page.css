@@ -1,0 +1,202 @@
+.user-wallet-container {
+    padding: 3vw;
+
+}
+
+.user-wallet-container .user-info, .user-wallet-container .wallet-info {
+    width: 60%;
+    display: flex;
+    background-color: var(--view-background);
+    padding: 1vw;
+    border-radius: 1vw;
+    margin: 0 auto;
+    gap: 2vw;
+}
+
+.user-wallet-container h2 {
+    margin-top: 1vw;
+    padding-bottom: 1vw;
+    color: var(--secondary-color);
+    font-size: 1.2vW;
+}
+
+.user-img {
+    width: 10vw;
+}
+
+.user-btns {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5vw;
+    gap: 0.5vw;
+}
+
+.user-img img {
+    width: 10vw;
+    height: 10vw;
+    border-radius: 50%;
+    border: 1px solid white;
+    object-fit: cover;
+}
+
+.user-btns button {
+    width: 100%;
+    font-size: 0.9vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.3vw;
+    border: none;
+    padding: 0.2vw 0.4vw;
+    cursor: pointer;
+    color: white;
+    transition: all 0.2s ease-in-out;
+}
+
+.user-btns button:hover, .withdraw-form button:hover{
+    scale: 1.05;
+}
+
+.user-btns button:first-of-type{
+    background-color: rgb(52, 52, 255);
+}
+
+.user-btns button:last-of-type{
+    background-color: var(--button-color);
+}
+
+.user-info .input-group{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5vw;
+    z-index: 5;
+}
+
+.user-info .input-group input{
+    color: white;
+}
+
+.user-info .input-group button{
+    background-color: var(--primary-color);
+    font-size: 0.8vw;
+}
+
+.user-info .info{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.user-info .info .info-item{
+    display: flex;
+    gap: 5vw;
+    color: white;
+    justify-content: space-between;
+    width: 50%;
+
+}
+
+.info-item span{
+    font-weight: bold;
+}
+
+.user-wallet-container .wallet-info{
+    margin-top: 1.5vw;
+    background-color: transparent;
+    padding: 0;
+}
+
+.user-wallet-container .wallet-info .info{
+    background-color: var(--view-background);
+    border-radius: 1vw;
+    width: 20%;
+    padding:0.6vw;
+    color: white;
+}
+
+.user-wallet-container .wallet-info .info h3, .withdraw-form h3{
+    font-size: 0.8vw;
+}
+
+.user-wallet-container .wallet-info .info p{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.5vw;
+    margin-bottom: 0.5vw;
+    font-size: 1vw;
+    gap: 0.3vw;
+}
+
+.withdraw-form {
+   width: 100%;
+   background-color: var(--view-background);
+   border-radius: 1vw;
+   padding:0.6vw;
+   color: white;
+}
+
+.withdraw-form form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.5vw;
+    margin-bottom: 0.5vw;
+    font-size: 1vw;
+    gap: 1vw;
+}
+
+.withdraw-form label{
+    font-size: 0.8vw;
+    margin-right: 1vw;
+}
+
+.withdraw-form button{
+    background-color: var(--button-color);
+    font-size: 0.8vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.3vw;
+    border: none;
+    padding: 0.2vw 0.4vw;
+    cursor: pointer;
+    color: white;
+    transition: all 0.2s ease-in-out;
+}
+
+.withdraw-form input{
+    border: none;
+    outline: none;
+    border-radius: 1vw;
+    font-size: 0.8vw;
+    padding: 0.2vw 0.4vw;
+    text-align: center;
+}
+
+.withdraw-form .input-group{
+    position: relative;
+}
+
+.withdraw-form .input-group span{
+    color: var(--view-background);
+    position: absolute;
+    top: 0%;
+    right: 0.5vw;
+    z-index: 5;
+    top: 50%;
+    transform: translateY(-40%);
+}
+
+.withdraw-form [type=number]::-webkit-inner-spin-button,
+.withdraw-form [type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+

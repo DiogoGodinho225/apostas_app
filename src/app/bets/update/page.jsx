@@ -2,7 +2,7 @@
 import { useState, useEffect, Suspense } from 'react'
 import { useUser } from "@/context/userContext";
 import '@/styles/bets/update.css'
-import { makeBet } from "@/services/betsApi";
+import { makeBet, updateBet } from "@/services/betsApi";
 import toast from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useLeagues } from "@/context/leaguesContext";
@@ -77,7 +77,8 @@ const Form = ({ bets }) => {
         setLoading(true);
 
         try {
-            const response = await makeBet(bet);
+            const betId = searchParams.get('id');
+            const response = await updateBet(betId, bet);
 
             if (response.status === 200 && response.data.success === true) {
                 router.push('/bets/index');
@@ -91,7 +92,7 @@ const Form = ({ bets }) => {
 
         } catch (error) {
             console.error(error);
-            toast.error('Erro ao registar aposta!');
+            toast.error('Erro ao editar aposta!');
         }
         setLoading(false);
     }
@@ -228,15 +229,6 @@ const Form = ({ bets }) => {
                             <div className="form-group">
                                 <label>Odd</label>
                                 <input name="odd" type="number" step='0.01' value={line.odd} onChange={(e) => handleBetLine(index, e)} required />
-                            </div>
-                            <div className="form-group">
-                                <label>Status</label>
-                                <select name="status" value={line.status} onChange={(e) => handleBetLine(index, e)}>
-                                    <option value="1">Pendente</option>
-                                    <option value="2">Ganha</option>
-                                    <option value="3">Perdida</option>
-                                    <option value="4">Devolvida</option>
-                                </select>
                             </div>
                         </div>
                     </div>

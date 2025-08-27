@@ -42,7 +42,7 @@ export async function POST(request) {
 
         const image = await transaction.image.create({
             data: {
-                url: `/images/teams/${fileName}`,
+                url: `/api/uploads/teams/${fileName}`,
             }
         })
 
@@ -81,7 +81,7 @@ export async function POST(request) {
     const team = await prisma.team.findFirst({ where: { name: name, country: country } });
 
     if (team) {
-        const filePath = path.join(process.cwd(), 'public', 'images', 'teams', fileName);
+        const filePath = path.join(process.cwd(), 'uploads', 'teams', fileName);
         fs.writeFileSync(filePath, buffer);
     } else {
         return new Response(JSON.stringify({ success: false, message: 'Erro ao criar equipa!' }), { status: 200 });
@@ -114,30 +114,33 @@ export async function PUT(request) {
 
     const data = {};
 
-    const oldImagePath = path.join(process.cwd(), 'public', team.images.url);
+    const url = team.images.url;
+    const nameFile = url.replace("/api/uploads/teams/", "");
+
+    const oldImagePath = path.join(process.cwd(), 'uploads', 'teams', nameFile);
 
     if (image) {
         const arrayBuffer = await image.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
 
         const fileName = shortName + '_logo.png';
-        const filePath = path.join(process.cwd(), 'public', 'images', 'teams', fileName);
+        const filePath = path.join(process.cwd(), 'uploads', 'teams', fileName);
 
         fs.unlinkSync(oldImagePath);
         fs.writeFileSync(filePath, buffer);
 
-        await prisma.image.update({ where: { id: team.images.id }, data: { url: `/images/teams/${fileName}` } })
+        await prisma.image.update({ where: { id: team.images.id }, data: { url: `/api/uploads/teams/${fileName}` } })
     }
 
     if (shortName && shortName !== team.short_name) {
         const newFileName = shortName + '_logo.png';
-        const newImagePath = path.join(process.cwd(), 'public', 'images', 'teams', newFileName);
+        const newImagePath = path.join(process.cwd(), 'uploads', 'teams', newFileName);
 
         if (fs.existsSync(oldImagePath)) {
             fs.renameSync(oldImagePath, newImagePath);
         }
 
-        await prisma.image.update({ where: { id: team.images.id }, data: { url: `/images/teams/${newFileName}` } });
+        await prisma.image.update({ where: { id: team.images.id }, data: { url: `/api/uploads/teams/${newFileName}` } });
 
         data.short_name = shortName;
     }

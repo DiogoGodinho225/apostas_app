@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma"
 
 export async function PUT(request, context) {
 
-     const params = await context.params;
+    const params = await context.params;
     const id = Number(params.id);
     const { depositValue } = await request.json();
 

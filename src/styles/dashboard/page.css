@@ -1,11 +1,11 @@
-.dashboard-container{
+.dashboard-container {
     padding: 3vw;
     display: flex;
     flex-direction: column;
     gap: 3vw;
 }
 
-.dash-row{
+.dash-row {
     display: flex;
     justify-content: space-between;
     gap: 1vw;
@@ -15,29 +15,88 @@
 .dashboard-container .profit-zone,
 .dashboard-container .roi-zone,
 .dashboard-container .winTaxZone,
-.dashboard-container .totalBets-zone
-{
+.dashboard-container .totalBets-zone {
     background-color: white;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
     width: 100%;
     border-radius: 0.5vw;
     padding: 1vw;
+    position: relative;
 }
 
-.dashboard-container h3{
-
+.dashboard-container h3 {
+    font-size: 0.9vw;
+    color: var(--view-background);
 }
 
-.month-profit{
+.dashboard-container .balance-zone {
+    margin-top: 0.5vw;
+    border-bottom: 2px dotted var(--view-background);
+    padding-bottom: 1vw;
+}
+
+.dashboard-container h4 {
+    font-size: 0.8vw;
+    color: rgb(91, 91, 91);
+}
+
+.dashboard-container .wallet-zone p {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2vw;
+    font-weight: bold;
+    color: var(--view-background);
+}
+
+.dashboard-container .stake-zone {
+    margin-top: 1vw;
+}
+
+.dashboard-container .profit-zone p,
+.dashboard-container .roi-zone p,
+.dashboard-container .winTaxZone p,
+.dashboard-container .totalBets-zone p
+{
+    width: calc(100% - 2vw);
+    font-size: 2vw;
+    font-weight: bold;
+    color: var(--view-background);
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.month-profit {
     background-color: white;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
     border-radius: 0.5vw;
     padding: 1vw;
     height: 7vw;
     width: 30%;
+    position: relative;
 }
 
-.graph{
+.month-profit p{
+    width: calc(100% - 2vw);
+    position: absolute;
+    font-weight: bold;
+    color: var(--view-background);
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5vw;
+}
+
+.graph {
     background-color: white;
     padding: 1vw;
     border-radius: 0.5vw;
@@ -46,20 +105,58 @@
     display: flex;
     flex-direction: column;
     gap: 1vw;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    font-size: 0.8vw;
 }
 
-.graph-group{
+.graph-group {
     width: 70%;
     display: flex;
     gap: 1vw
 }
 
-.transaction-history{
-    background-color: white;
-    width: 30%;
-    border-radius: 0.5vw;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
-    max-height: 20vw;
-    overflow: auto;
+.transaction-history {
+  background-color: white;
+  width: 30%;
+  border-radius: 0.5vw;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+  padding: 1vw;
+}
+
+.dashboard-container table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 0.7vw;
+
+}
+
+.dashboard-container th,
+.dashboard-container td {
+  padding: 0.5vw;
+  text-align: center;
+}
+
+.dashboard-container td{
+    padding-left: 1.2vw!important;
+}
+.dashboard-container thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.dashboard-container tbody {
+  display: block;
+  max-height: 15vw;
+  overflow-y: auto;
+  width: 100%;
+  height: 30vw;
+}
+
+.dashboard-container thead tr,
+.dashboard-container tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  font-size: 0.7vw;
 }

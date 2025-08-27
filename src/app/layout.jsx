@@ -22,14 +22,16 @@ export default function RootLayout({ children }) {
         <body>
           <main className='blank-container'>
             <SessionProvider>
-              <Toaster position="top-right"
-                toastOptions={{
-                  style: {
-                    fontSize: '0.8vw',
-                  }
-                }}
-              />
-              {children}
+              <UserProvider>
+                <Toaster position="top-right"
+                  toastOptions={{
+                    style: {
+                      fontSize: '0.8vw',
+                    }
+                  }}
+                />
+                {children}
+              </UserProvider>
             </SessionProvider>
           </main>
         </body>

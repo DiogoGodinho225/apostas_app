@@ -365,6 +365,7 @@ const BetLineDetails = ({ betLine, handleUpdateBet, bet, handleLabelStatus, stak
 
     const router = useRouter();
     const [status, setStatus] = useState(betLine.status);
+    const {fetchUserTransactions} = useUser();
 
     useEffect(() => {
         setStatus(betLine.status);
@@ -478,6 +479,7 @@ const BetLineDetails = ({ betLine, handleUpdateBet, bet, handleLabelStatus, stak
                     }
                 }))
 
+                fetchUserTransactions();
 
             } else if (response.data.success === false) {
                 toast.error(response.data.message);

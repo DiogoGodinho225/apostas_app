@@ -7,13 +7,15 @@ import { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';
 import { IoLogoEuro } from "react-icons/io5";
+import { useUser } from '@/context/userContext';
 
-const DepositModal = ({ setShowModal, fetchUser }) => {
+const DepositModal = ({ setShowModal }) => {
 
     const [depositValue, setDepositValue] = useState(0);
     const [loading, setLoading] = useState(false);
     const { data: session, status } = useSession();
     const router = useRouter();
+    const {fetchUser, fetchUserTransactions} = useUser();
 
     const handleDeposit = async (e) => {
         e.preventDefault();
@@ -34,6 +36,7 @@ const DepositModal = ({ setShowModal, fetchUser }) => {
             } else {
                 toast.success(result.data.message);
                 fetchUser();
+                fetchUserTransactions()
                 setDepositValue(0);
             }
 

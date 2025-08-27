@@ -33,3 +33,13 @@ export const betStatus = async(betId, betLineId, status)=>{
         console.error(error)
     }
 }
+
+export const updateBet = async(betId, bet)=>{
+    try {
+        const response = await axios.put(`/api/bets/${betId}`, bet);
+
+        return response;
+    } catch (error) {
+        console.error(error);
+    }
+}

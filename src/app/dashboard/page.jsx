@@ -3,9 +3,10 @@ import { useStatistics } from "@/context/statisticsContext";
 import React from "react";
 import { useEffect } from 'react';
 import '@/styles/dashboard/page.css'
-import { FaEuroSign } from "react-icons/fa";
+import { FaEuroSign, FaPercentage } from "react-icons/fa";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label } from 'recharts';
 import { useBets } from "@/context/betsContext";
+import { useUser } from "@/context/userContext";
 
 const Dashboard = () => {
 
@@ -41,7 +42,7 @@ const WalletZone = () => {
             </div>
             <div className="stake-zone">
                 <h4>Stake</h4>
-                <p>{stake}</p>
+                <p>{stake} <FaEuroSign /></p>
             </div>
         </div>
     );
@@ -52,8 +53,8 @@ const ProfitZone = () => {
 
     return (
         <div className="profit-zone">
-            <h4>Lucro</h4>
-            <p>{profit} <FaEuroSign /></p>
+            <h3>Lucro</h3>
+            <p style={{ color: profit > 0 ? 'green' : profit < 0 ? 'red' : '' }}>{profit} <FaEuroSign /></p>
         </div>
     );
 }
@@ -63,8 +64,8 @@ const ROIZone = () => {
 
     return (
         <div className="roi-zone">
-            <h4>ROI</h4>
-            <p>{ROI} %</p>
+            <h3>ROI</h3>
+            <p style={{ color: ROI > 0 ? 'green' : ROI < 0 ? 'red' : '' }}>{ROI || 0}<FaPercentage /></p>
         </div>
     );
 }
@@ -74,8 +75,8 @@ const WinTaxZone = () => {
 
     return (
         <div className="winTaxZone">
-            <h4>Taxa de acerto</h4>
-            <p>{winTax} %</p>
+            <h3>Taxa de acerto</h3>
+            <p style={{ color: winTax > 0 ? 'green' : winTax < 0 ? 'red' : '' }}>{winTax || 0}<FaPercentage /></p>
         </div>
     );
 }
@@ -85,7 +86,7 @@ const TotalBets = () => {
 
     return (
         <div className="totalBets-zone">
-            <h4>Total de apostas</h4>
+            <h3>Total de apostas</h3>
             <p>{totalBets}</p>
         </div>
     );
@@ -121,6 +122,7 @@ const GraphProfitOfTheMonth = () => {
 
 
     const GraphData = calculateProfitOfTheMonth();
+    const MonthProfit = GraphData.length ? GraphData[GraphData.length - 1].Lucro.toFixed(2) : 0;
 
     return (
         <div className="graph-group">
@@ -158,9 +160,9 @@ const GraphProfitOfTheMonth = () => {
             </div>
 
             <div className="month-profit">
-                <h4>Lucro do mês</h4>
-                <p>
-                    {GraphData.length ? GraphData[GraphData.length - 1].Lucro.toFixed(2) : 0} €
+                <h3>Lucro do mês</h3>
+                <p style={{ color: MonthProfit > 0 ? 'green' : MonthProfit < 0 ? 'red' : '' }}>
+                    {MonthProfit} €
                 </p>
             </div>
         </div>
@@ -171,9 +173,52 @@ const GraphProfitOfTheMonth = () => {
 
 const TransactionHistory = () => {
 
+    const { userTransactions } = useUser();
+
+    const handleColorTransaction = (typeId) => {
+        const colors = {
+            1: 'green',
+            2: 'green',
+            3: 'rgb(36, 36, 36)',
+            4: 'green',
+            5: 'red',
+            7: 'red',
+        }
+
+        const color = colors[typeId];
+
+        return color;
+    }
+
     return (
         <div className="transaction-history">
-            <p>Vai ser gerada as trabnsacoes</p>
+            <h3>Histórico de transações</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Ação</th>
+                        <th>Montante</th>
+                        <th>Carteira</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {userTransactions && userTransactions.length > 0 ? (
+                        userTransactions.map((t) => (
+                            <tr key={t.id}>
+                                <td>{new Date(t.created_at).toLocaleDateString() + ' - ' + new Date(t.created_at).toLocaleTimeString()}</td>
+                                <td style={{ color: handleColorTransaction(t.transaction_type.id) }}>{t.transaction_type.name}</td>
+                                <td style={{ color: handleColorTransaction(t.transaction_type.id) }}>{handleColorTransaction(t.transaction_type.id) === 'green' ? `+${t.amount}€` : handleColorTransaction(t.transaction_type.id) === 'red' ? `-${t.amount}€` : `+${t.amount}€`}</td>
+                                <td>{t.balance}€</td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan={4}>Sem Nenhuma Transação</td>
+                        </tr>
+                    )}
+                </tbody>
+            </table>
         </div>
     );
 
